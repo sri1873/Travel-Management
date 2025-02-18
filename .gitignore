@@ -1,0 +1,9 @@
+# Logs
+*.log
+
+# Operating system files
+.DS_Store
+
+# Dependency directories for both frontend and backend
+/frontend/node_modules/
+/backend/target/
