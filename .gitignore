@@ -7,3 +7,5 @@
 # Dependency directories for both frontend and backend
 /frontend/node_modules/
 /backend/target/
+
+.vscode/
