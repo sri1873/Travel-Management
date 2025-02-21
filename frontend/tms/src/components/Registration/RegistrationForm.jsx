@@ -9,6 +9,7 @@ const RegistrationForm = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [isGoogleLogin, setIsGoogleLogin] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(null);  
 
     const handleGoogleLogin = (response) => {
         console.log(response);
@@ -31,7 +32,7 @@ const RegistrationForm = () => {
         });
 
         if (response.ok) {
-            alert('User registered successfully!');
+            setSuccessMessage('User registered successfully! Please check your email for verification.');
         } else {
             setError('Registration failed, please try again.');
         }
@@ -87,6 +88,7 @@ const RegistrationForm = () => {
                 </form>
             )}
 
+            {successMessage && <p className="success-message">{successMessage}</p>}  
             {error && <p className="error-message">{error}</p>}
 
             {!isGoogleLogin && (

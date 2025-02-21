@@ -6,6 +6,7 @@ import com.tms.usermanagement.repository.RoleRepository;
 import com.tms.usermanagement.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.Optional;
 
@@ -18,7 +19,9 @@ public class UserRegistrationService {
     @Autowired
     private RoleRepository roleRepository;
 
-    
+    @Autowired
+    private EmailService emailService; 
+
     public User registerUser(String firstName, String lastName, String email, String password) {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
@@ -29,13 +32,24 @@ public class UserRegistrationService {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPassword(password);  
+        user.setPassword(password);  // Ensure password is hashed before saving
         user.setFullName(firstName + " " + lastName);
-        
+
+        // Generate email verification token (hash of the email)
+        String token = DigestUtils.md5DigestAsHex(email.getBytes());
+        user.setVerificationToken(token);
+
         Role userRole = roleRepository.findByRoleName("User");
         user.setRole(userRole);
 
-        return userRepository.save(user);
+        user.setEmailVerified(false); // Initially set emailVerified to false
+
+        userRepository.save(user);
+
+        // Send verification email with token
+        emailService.sendVerificationEmail(email, token);
+
+        return user;
     }
 
     public User registerGoogleUser(String firstName, String lastName, String email) {
@@ -49,8 +63,8 @@ public class UserRegistrationService {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setFullName(firstName + " " + lastName); 
-        user.setEmailVerified(true);  
-        
+        user.setEmailVerified(true);  // Since Google authentication verifies the user
+
         Role userRole = roleRepository.findByRoleName("User");
         user.setRole(userRole);
 
