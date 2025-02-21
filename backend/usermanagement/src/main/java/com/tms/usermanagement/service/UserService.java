@@ -7,6 +7,8 @@ import com.tms.usermanagement.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -16,26 +18,23 @@ public class UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-
-
-    public User registerUser(User user) {
-        // Check if email or username already exists
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already in use");
+    public User registerGoogleUser(String firstName, String lastName, String email) {
+        Optional<User> existingUser = userRepository.findByEmail(email);
+        if (existingUser.isPresent()) {
+            return existingUser.get(); 
         }
 
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("Username already taken");
-        }
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setFullName(firstName + " " + lastName); 
+        user.setEmailVerified(true);
 
-        // Set the default user role 
-        Role userRole = roleRepository.findByRoleName("User"); 
+        
+        Role userRole = roleRepository.findByRoleName("User");
         user.setRole(userRole);
 
-        // Save the user in the database
-        User savedUser = userRepository.save(user);
-
-
-        return savedUser;
+        return userRepository.save(user);
     }
 }
