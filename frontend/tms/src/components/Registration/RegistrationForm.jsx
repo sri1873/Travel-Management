@@ -12,7 +12,7 @@ const RegistrationForm = () => {
 
     const handleGoogleLogin = (response) => {
         console.log(response);
-        setEmail(response?.credential); 
+        setEmail(response?.credential);
         setIsGoogleLogin(true);
     };
 
