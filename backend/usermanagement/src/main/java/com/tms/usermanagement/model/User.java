@@ -32,6 +32,9 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @Transient
+    private String confirmPassword;
+
     public String getFirstName() {
         return firstName;
     }
@@ -111,4 +114,12 @@ public class User {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    public String getConfirmPassword() { 
+        return confirmPassword; 
+    }  
+
+    public void setConfirmPassword(String confirmPassword) {
+         this.confirmPassword = confirmPassword; 
+    }  
 }

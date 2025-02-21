@@ -22,6 +22,10 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
+        if (user.getPassword() == null || !user.getPassword().equals(user.getConfirmPassword())) {
+            return ResponseEntity.badRequest().body("Password and Confirm Password must match.");
+        }
+    
         try {
             userRegistrationService.registerUser(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
             return ResponseEntity.ok("User registered successfully. Please check your email for verification.");
@@ -29,6 +33,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
 
     @GetMapping("/verify-email")
     public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {

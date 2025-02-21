@@ -7,9 +7,35 @@ const RegistrationForm = () => {
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
     const [isGoogleLogin, setIsGoogleLogin] = useState(false);
-    const [successMessage, setSuccessMessage] = useState(null);  
+    const [successMessage, setSuccessMessage] = useState(null);
+
+    // Regex Patterns
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+
+    const validateForm = () => {
+        if (!emailRegex.test(email)) {
+            setError('Invalid email format');
+            return false;
+        }
+        if (!passwordRegex.test(password)) {
+            setError('Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character');
+            return false;
+        }
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return false;
+        }
+        if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+            setError('First name and last name must only contain letters and spaces');
+            return false;
+        }
+        return true;
+    };
 
     const handleGoogleLogin = (response) => {
         console.log(response);
@@ -19,9 +45,12 @@ const RegistrationForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!validateForm()) return;
+
         const userData = isGoogleLogin
             ? { email, firstName, lastName }
-            : { firstName, lastName, email, password };
+            : { firstName, lastName, email, password, confirmPassword };  
 
         const response = await fetch('http://localhost:8080/api/users/register', {
             method: 'POST',
@@ -34,7 +63,8 @@ const RegistrationForm = () => {
         if (response.ok) {
             setSuccessMessage('User registered successfully! Please check your email for verification.');
         } else {
-            setError('Registration failed, please try again.');
+            const errorData = await response.json();
+            setError(errorData.message || 'Registration failed, please try again.');
         }
     };
 
@@ -84,11 +114,21 @@ const RegistrationForm = () => {
                             required
                         />
                     </div>
+                    <div>
+                        <label htmlFor="confirmPassword">Confirm Password</label>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                        />
+                    </div>
                     <button type="submit">Register</button>
                 </form>
             )}
 
-            {successMessage && <p className="success-message">{successMessage}</p>}  
+            {successMessage && <p className="success-message">{successMessage}</p>}
             {error && <p className="error-message">{error}</p>}
 
             {!isGoogleLogin && (

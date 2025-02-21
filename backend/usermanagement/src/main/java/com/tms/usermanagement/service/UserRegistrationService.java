@@ -32,21 +32,21 @@ public class UserRegistrationService {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPassword(password);  // Ensure password is hashed before saving
+        user.setPassword(password);  
         user.setFullName(firstName + " " + lastName);
 
-        // Generate email verification token (hash of the email)
+        
         String token = DigestUtils.md5DigestAsHex(email.getBytes());
         user.setVerificationToken(token);
 
         Role userRole = roleRepository.findByRoleName("User");
         user.setRole(userRole);
 
-        user.setEmailVerified(false); // Initially set emailVerified to false
+        user.setEmailVerified(false); 
 
         userRepository.save(user);
 
-        // Send verification email with token
+        
         emailService.sendVerificationEmail(email, token);
 
         return user;
@@ -63,7 +63,7 @@ public class UserRegistrationService {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setFullName(firstName + " " + lastName); 
-        user.setEmailVerified(true);  // Since Google authentication verifies the user
+        user.setEmailVerified(true);  
 
         Role userRole = roleRepository.findByRoleName("User");
         user.setRole(userRole);
