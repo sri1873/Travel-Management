@@ -3,12 +3,11 @@ package com.tms.usermanagement.controller;
 import com.tms.usermanagement.model.User;
 import com.tms.usermanagement.repository.UserRepository;
 import com.tms.usermanagement.service.UserRegistrationService;
-
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,6 +21,8 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
+        System.out.println("Received user: " + user.toString());  // Add logging here
+    
         if (user.getPassword() == null || !user.getPassword().equals(user.getConfirmPassword())) {
             return ResponseEntity.badRequest().body("Password and Confirm Password must match.");
         }
@@ -33,6 +34,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
     
 
     @GetMapping("/verify-email")

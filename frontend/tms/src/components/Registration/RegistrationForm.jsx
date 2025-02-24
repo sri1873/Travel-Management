@@ -45,13 +45,19 @@ const RegistrationForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         if (!validateForm()) return;
-
-        const userData = isGoogleLogin
-            ? { email, firstName, lastName }
-            : { firstName, lastName, email, password, confirmPassword };  
-
+    
+        const userData = {
+            firstName,
+            lastName,
+            email,
+            password,
+            confirmPassword,
+        };
+    
+        console.log("Sending user data to backend:", userData);  // Log to see the data being sent
+    
         const response = await fetch('http://localhost:8080/api/users/register', {
             method: 'POST',
             headers: {
@@ -59,14 +65,18 @@ const RegistrationForm = () => {
             },
             body: JSON.stringify(userData),
         });
-
+        
+        console.log("Response Status: ", response.status);  
         if (response.ok) {
             setSuccessMessage('User registered successfully! Please check your email for verification.');
         } else {
             const errorData = await response.json();
+            console.log('Error Data:', errorData);  
             setError(errorData.message || 'Registration failed, please try again.');
         }
     };
+    
+    
 
     return (
         <div className="registration-container">
