@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import RegistrationForm from './components/Registration/RegistrationForm';
-import Home from './components/Home';  // Your home component or just a placeholder
+import LoginForm from './components/Login/LoginForm'
+import Home from './components/Home';  
 
 const App = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Home />} />  {/* Add this route */}
+                <Route path="/" element={<Home />} />  
                 <Route path="/register" element={<RegistrationForm />} />
-                {/* Add more routes as needed */}
+                <Route path="/login" element={<LoginForm />} />
             </Routes>
         </Router>
     );

@@ -5,7 +5,9 @@ import com.tms.usermanagement.repository.UserRepository;
 import com.tms.usermanagement.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import com.tms.usermanagement.service.UserLoginService;
 
 import java.util.Optional;
 
@@ -19,9 +21,12 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserLoginService userLoginService;
+
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
-        System.out.println("Received user: " + user.toString());  // Add logging here
+        System.out.println("Received user: " + user.toString());  
     
         if (user.getPassword() == null || !user.getPassword().equals(user.getConfirmPassword())) {
             return ResponseEntity.badRequest().body("Password and Confirm Password must match.");
@@ -34,7 +39,6 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
     
 
     @GetMapping("/verify-email")
@@ -50,5 +54,25 @@ public class UserController {
         userRepository.save(verifiedUser);
 
         return ResponseEntity.ok("Email verified successfully!");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody User loginRequest) {
+        try {
+            // Attempt to login using email and password
+            User user = userLoginService.loginWithEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
+
+            // Check if the email is verified
+            if (!user.getEmailVerified()) {
+                return ResponseEntity.badRequest().body("Email not verified. Please verify your email.");
+            }
+
+            // If login is successful, return a success message or token for session management
+            return ResponseEntity.ok("Login successful. Redirecting to dashboard...");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.badRequest().body("Invalid email or password.");
+        }
     }
 }

@@ -56,7 +56,7 @@ const RegistrationForm = () => {
             confirmPassword,
         };
     
-        console.log("Sending user data to backend:", userData);  // Log to see the data being sent
+        console.log("Sending user data to backend:", userData);  
     
         const response = await fetch('http://localhost:8080/api/users/register', {
             method: 'POST',
