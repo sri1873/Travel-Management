@@ -13,9 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*");
 
-        // Allow OAuth2 redirect URI callback
         registry.addMapping("/oauth2/**")
-                .allowedOrigins("http://localhost:5173") // Adjust this to your frontend URL
+                .allowedOrigins("http://localhost:5173") 
                 .allowedMethods("GET", "POST", "OPTIONS");
     }
 }
