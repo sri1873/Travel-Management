@@ -1,13 +1,13 @@
-package com.tms.restaurantmanagement;
+package com.tms.restaurantdiscovery;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RestaurantmanagementApplication {
+public class RestaurantDiscoveryApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RestaurantmanagementApplication.class, args);
+		SpringApplication.run(RestaurantDiscoveryApplication.class, args);
 	}
 
 }
