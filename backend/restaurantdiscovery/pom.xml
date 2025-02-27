@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tms</groupId>
-	<artifactId>restaurantmanagement</artifactId>
+	<artifactId>restaurantdiscovery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>restaurantmanagement</name>
+	<name>restaurantdiscovery</name>
 	<description>Restaurant Management module for Travel Management System</description>
 	<url/>
 	<licenses>
