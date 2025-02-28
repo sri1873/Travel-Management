@@ -1,9 +1,13 @@
 package com.tms.restaurantdiscovery.service;
 
+import com.tms.restaurantdiscovery.dto.RestaurantWithReviewsDTO;
+import com.tms.restaurantdiscovery.dto.ReviewDTO;
 import com.tms.restaurantdiscovery.model.Restaurant;
 import com.tms.restaurantdiscovery.repository.RestaurantRepository;
+import com.tms.restaurantdiscovery.client.ReviewsClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,10 +15,12 @@ import java.util.Optional;
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
+    private final ReviewsClient reviewsClient;
 
     @Autowired
-    public RestaurantService(RestaurantRepository restaurantRepository) {
+    public RestaurantService(RestaurantRepository restaurantRepository, ReviewsClient reviewsClient) {
         this.restaurantRepository = restaurantRepository;
+        this.reviewsClient = reviewsClient;
     }
 
     // Retrieve all restaurants
@@ -29,18 +35,30 @@ public class RestaurantService {
 
     // Search restaurants based on location and cuisine
     public List<Restaurant> searchRestaurants(String location, String cuisine) {
+        // (Filtering logic as implemented earlier)
         if ((location == null || location.isEmpty()) && (cuisine == null || cuisine.isEmpty())) {
-            // No filters provided, return all restaurants.
             return restaurantRepository.findAll();
         } else if (location != null && !location.isEmpty() && (cuisine == null || cuisine.isEmpty())) {
-            // Only location is provided.
             return restaurantRepository.findByRestaurantLocationContainingIgnoreCase(location);
         } else if ((location == null || location.isEmpty()) && cuisine != null && !cuisine.isEmpty()) {
-            // Only cuisine is provided.
             return restaurantRepository.findByCuisineContainingIgnoreCase(cuisine);
         } else {
-            // Both location and cuisine are provided.
             return restaurantRepository.findByRestaurantLocationContainingIgnoreCaseAndCuisineContainingIgnoreCase(location, cuisine);
         }
+    }
+
+    // Retrieve restaurant details along with its reviews
+    public RestaurantWithReviewsDTO getRestaurantWithReviews(Long id) {
+         Optional<Restaurant> restaurantOpt = restaurantRepository.findById(id);
+         if (restaurantOpt.isEmpty()) {
+             return null; // or throw an exception as needed
+         }
+         Restaurant restaurant = restaurantOpt.get();
+         // Call the Reviews microservice to get reviews
+         ReviewDTO[] reviewsArray = reviewsClient.fetchReviewsForRestaurant(id);
+         RestaurantWithReviewsDTO dto = new RestaurantWithReviewsDTO();
+         dto.setRestaurant(restaurant);
+         dto.setReviews(Arrays.asList(reviewsArray));
+         return dto;
     }
 }
