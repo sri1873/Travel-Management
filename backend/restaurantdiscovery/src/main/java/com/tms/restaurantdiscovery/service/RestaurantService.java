@@ -51,14 +51,25 @@ public class RestaurantService {
     public RestaurantWithReviewsDTO getRestaurantWithReviews(Long id) {
          Optional<Restaurant> restaurantOpt = restaurantRepository.findById(id);
          if (restaurantOpt.isEmpty()) {
-             return null; // or throw an exception as needed
+             return null; // Or throw an exception as needed
          }
          Restaurant restaurant = restaurantOpt.get();
          // Call the Reviews microservice to get reviews
          ReviewDTO[] reviewsArray = reviewsClient.fetchReviewsForRestaurant(id);
+         List<ReviewDTO> reviewsList = Arrays.asList(reviewsArray);
+
+         // Calculate the average rating
+         double averageRating = reviewsList.stream()
+                 .mapToDouble(review -> review.getReviewScore() != null ? review.getReviewScore() : 0.0)
+                 .average()
+                 .orElse(0.0);
+
+         // Prepare the DTO with both restaurant details and reviews
          RestaurantWithReviewsDTO dto = new RestaurantWithReviewsDTO();
          dto.setRestaurant(restaurant);
-         dto.setReviews(Arrays.asList(reviewsArray));
+         dto.setReviews(reviewsList);
+         dto.setAverageRating(averageRating);
+
          return dto;
     }
 }

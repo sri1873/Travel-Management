@@ -6,6 +6,7 @@ import java.util.List;
 public class RestaurantWithReviewsDTO {
     private Restaurant restaurant;
     private List<ReviewDTO> reviews;
+    private Double averageRating;
 
     // Getters and Setters
     public Restaurant getRestaurant() {
@@ -19,5 +20,11 @@ public class RestaurantWithReviewsDTO {
     }
     public void setReviews(List<ReviewDTO> reviews) {
         this.reviews = reviews;
+    }
+    public Double getAverageRating() {
+        return averageRating;
+    }
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
     }
 }
