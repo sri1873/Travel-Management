@@ -1,15 +1,21 @@
 package com.tms.restaurantdiscovery.client;
 
+import com.tms.restaurantdiscovery.dto.ReviewDTO;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
-// Placeholder for future integration with the Reviews Microservice.
-// In the future, you can implement methods using RestTemplate, WebClient, or FeignClient
-// to call the reviews microservice endpoints.
 @Component
 public class ReviewsClient {
 
-    // tms method stub for fetching reviews or aggregated ratings.
-    public void fetchReviewsForRestaurant(Long restaurantId) {
-        // TODO: Implement integration logic.
+    private final RestTemplate restTemplate;
+    // The Reviews microservice is running on port 8082
+    private final String reviewsServiceBaseUrl = "http://localhost:8082/api/reviews/restaurant/";
+
+    public ReviewsClient() {
+        this.restTemplate = new RestTemplate();
+    }
+
+    public ReviewDTO[] fetchReviewsForRestaurant(Long restaurantId) {
+         return restTemplate.getForObject(reviewsServiceBaseUrl + restaurantId, ReviewDTO[].class);
     }
 }
