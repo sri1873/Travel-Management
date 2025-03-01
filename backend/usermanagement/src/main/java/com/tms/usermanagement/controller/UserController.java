@@ -4,6 +4,7 @@ import com.tms.usermanagement.model.User;
 import com.tms.usermanagement.repository.UserRepository;
 import com.tms.usermanagement.service.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -41,21 +42,26 @@ public class UserController {
     }
     
 
-    @GetMapping("/verify-email")
-    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
-        Optional<User> user = userRepository.findByVerificationToken(token);
-
-        if (user.isEmpty()) {
-            return ResponseEntity.badRequest().body("Invalid verification token.");
+    @PostMapping("/login/google")
+    public ResponseEntity<String> loginWithGoogle(@RequestBody String googleToken) {
+        try {
+            User user = userLoginService.loginWithGoogle(googleToken);
+            return ResponseEntity.ok("Google login successful. Welcome, " + user.getFirstName());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Google login failed: " + e.getMessage());
         }
-
-        User verifiedUser = user.get();
-        verifiedUser.setEmailVerified(true);
-        userRepository.save(verifiedUser);
-
-        return ResponseEntity.ok("Email verified successfully!");
     }
 
+    @GetMapping("/verify-email")
+    public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
+        try {
+            User verifiedUser = userLoginService.verifyEmail(token);
+            return ResponseEntity.ok("Email verified successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email verification failed: " + e.getMessage());
+        }
+    }
+    
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody User loginRequest) {
         try {

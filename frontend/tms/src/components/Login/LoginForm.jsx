@@ -69,6 +69,7 @@ const LoginPage = () => {
                 <GoogleLogin
                     onSuccess={handleGoogleLogin}
                     onError={(error) => console.log('Login Failed', error)}
+                    clientId="" 
                 />
             </div>
         </div>

@@ -143,10 +143,11 @@ const RegistrationForm = () => {
 
             {!isGoogleLogin && (
                 <div className="google-login">
-                    <GoogleLogin
-                        onSuccess={handleGoogleLogin}
-                        onError={(error) => console.log('Login Failed', error)}
-                    />
+                <GoogleLogin
+                    onSuccess={handleGoogleLogin}
+                    onError={(error) => console.log('Login Failed', error)}
+                    clientId=""  
+                />
                 </div>
             )}
         </div>
