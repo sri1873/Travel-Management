@@ -3,11 +3,15 @@
     background-image: url("../../../assets/2380.jpg");
     background-size: cover;
     width: 98vw;
-    height: 80vh;
+    height: 88vh;
     border-radius: 20px;
     display: flex;
     justify-content: center;
     padding: 2em;
+    margin: 1em;
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 .flight-info-container{
     display: flex;
