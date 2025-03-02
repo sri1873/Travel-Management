@@ -1,15 +1,15 @@
 /* RestaurantList.css */
 
 .restaurant-list-container {
-    /* Center the layout and limit width */
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    /* Add top padding equal to your fixed header height */
+    padding: 300px 20px 20px 20px;
     box-sizing: border-box;
     font-family: 'Helvetica Neue', Arial, sans-serif;
     color: #333;
-    position: relative; /* Not strictly necessary, but can help with stacking contexts */
+    position: relative;
   }
   
   /* FIXED HEADER */
@@ -63,17 +63,12 @@
     background-color: #34495e;
   }
   
-  /* RESULTS SECTION */
-  .results-container {
-    margin-top: 700px; /* Adjust this to match the header’s total height */
-  }
-  
   /* GRID FOR RESTAURANTS */
   .results-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 50px;
-    justify-items: center;
+    justify-items: top;
     margin-top: 1em;
   }
   
@@ -119,6 +114,3 @@
   .view-details-link:hover {
     background-color: #cf6d14;
   }
-  
-  /* RES
-  
