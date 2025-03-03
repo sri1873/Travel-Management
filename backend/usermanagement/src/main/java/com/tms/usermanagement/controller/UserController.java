@@ -4,11 +4,9 @@ import com.tms.usermanagement.model.User;
 import com.tms.usermanagement.repository.UserRepository;
 import com.tms.usermanagement.service.UserRegistrationService;
 import com.tms.usermanagement.service.UserLoginService;
-
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,16 +51,27 @@ public class UserController {
         try {
             String googleToken = googleTokenMap.get("googleToken");
             User user = userLoginService.loginWithGoogle(googleToken);
-
             String token = generateToken(user);
-
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             return ResponseEntity.ok(response);
-
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("message", "Google login failed: " + e.getMessage()));
+                    .body(Map.of("message", "Google login failed: " + e.getMessage()));
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody User loginRequest) {
+        try {
+            User user = userLoginService.loginWithEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
+            String token = generateToken(user);
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", e.getMessage()));
         }
     }
 
@@ -90,28 +99,11 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User loginRequest) {
-        try {
-            User user = userLoginService.loginWithEmailPassword(
-                loginRequest.getEmail(),
-                loginRequest.getPassword()
-            );
-
-            if (!user.getEmailVerified()) {
-                return ResponseEntity.badRequest().body("Email not verified. Please verify your email.");
-            }
-            return ResponseEntity.ok("Login successful. Redirecting to dashboard...");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
     private String generateToken(User user) {
         return Jwts.builder()
             .setSubject(user.getEmail())
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day
+            .setExpiration(new Date(System.currentTimeMillis() + 86400000))
             .signWith(SignatureAlgorithm.HS512, "your-secret-key")
             .compact();
     }

@@ -7,9 +7,9 @@ import com.tms.usermanagement.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
-
 import java.util.Date;
 import java.util.Optional;
 
@@ -25,6 +25,9 @@ public class UserRegistrationService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public User registerUser(String firstName, String lastName, String email, String password) {
         Optional<User> existingUser = userRepository.findByEmail(email);
@@ -36,7 +39,8 @@ public class UserRegistrationService {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPassword(password);
+        // Hash the password using BCrypt
+        user.setPassword(passwordEncoder.encode(password));
         user.setFullName(firstName + " " + lastName);
 
         String token = generateEmailVerificationToken(email);
@@ -52,9 +56,7 @@ public class UserRegistrationService {
         user.setRole(userRole);
 
         userRepository.save(user);
-
         emailService.sendVerificationEmail(email, token);
-
         return user;
     }
 
@@ -62,7 +64,7 @@ public class UserRegistrationService {
         return Jwts.builder()
             .setSubject(email)
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day expiry
+            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) 
             .signWith(SignatureAlgorithm.HS512, "your-secret-key")
             .compact();
     }

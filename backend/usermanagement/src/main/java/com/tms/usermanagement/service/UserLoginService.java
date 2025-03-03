@@ -4,18 +4,16 @@ import com.tms.usermanagement.model.Role;
 import com.tms.usermanagement.model.User;
 import com.tms.usermanagement.repository.RoleRepository;
 import com.tms.usermanagement.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Optional;
-
 import jakarta.transaction.Transactional;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Optional;
 
 @Service
 public class UserLoginService {
@@ -26,7 +24,9 @@ public class UserLoginService {
     @Autowired
     private RoleRepository roleRepository;
 
-  
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public User loginWithGoogle(String googleToken) {
         try {
@@ -57,7 +57,7 @@ public class UserLoginService {
             newUser.setFirstName(firstName);
             newUser.setLastName(lastName);
             newUser.setFullName(fullName);
-            newUser.setEmailVerified(true); 
+            newUser.setEmailVerified(true);
             Role userRole = roleRepository.findByRoleName("User");
             if (userRole == null) {
                 userRole = new Role();
@@ -65,8 +65,6 @@ public class UserLoginService {
                 roleRepository.save(userRole);
             }
             newUser.setRole(userRole);
-
-            
             newUser.setPassword(""); 
 
             return userRepository.save(newUser);
@@ -76,11 +74,11 @@ public class UserLoginService {
         }
     }
 
-    public User loginWithEmailPassword(String email, String password) {
+    public User loginWithEmailPassword(String email, String rawPassword) {
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        if (!password.equals(user.getPassword())) {
+        if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
             throw new IllegalArgumentException("Invalid password.");
         }
         if (!user.getEmailVerified()) {
