@@ -21,7 +21,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
-    private Role role; 
+    private Role role;
 
     private Boolean emailVerified = false;
     private String verificationToken;
@@ -115,11 +115,11 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public String getConfirmPassword() { 
-        return confirmPassword; 
-    }  
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
 
     public void setConfirmPassword(String confirmPassword) {
-         this.confirmPassword = confirmPassword; 
-    }  
+        this.confirmPassword = confirmPassword;
+    }
 }
