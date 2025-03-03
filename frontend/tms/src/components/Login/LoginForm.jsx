@@ -87,7 +87,7 @@ const LoginPage = () => {
                 <GoogleLogin
                     onSuccess={handleGoogleLogin}
                     onError={(err) => console.log('Google Login Failed', err)}
-                    clientId="298241894325-eaibicjhtaiumbaseu8olovuohje7gia.apps.googleusercontent.com"
+                    clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
                 />
             </div>
         </div>

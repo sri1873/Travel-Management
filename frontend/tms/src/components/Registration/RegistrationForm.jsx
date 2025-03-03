@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './RegistrationForm.css';
 import { GoogleLogin } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const RegistrationForm = () => {
     const [firstName, setFirstName] = useState('');
@@ -161,16 +161,22 @@ const RegistrationForm = () => {
                 </form>
             )}
 
-            {successMessage && <p className="success-message">{successMessage}</p>}
+            {successMessage && (
+                <div className="success-message">
+                    <p>{successMessage}</p>
+                    <p>
+                        Verified? <Link to="/login">Login here</Link>
+                    </p>
+                </div>
+            )}
             {error && <p className="error-message">{error}</p>}
 
-            {}
             {!isGoogleLogin && (
                 <div className="google-login">
                     <GoogleLogin
                         onSuccess={handleGoogleLogin}
                         onError={(error) => console.log('Google Login Failed', error)}
-                        clientId="298241894325-eaibicjhtaiumbaseu8olovuohje7gia.apps.googleusercontent.com"
+                        clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
                     />
                 </div>
             )}

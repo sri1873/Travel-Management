@@ -8,6 +8,7 @@ import LoginForm from './components/Login/LoginForm'
 import './App.css'
 import Onboarding from './components/Registration/Onboarding';
 import VerifyEmail from './components/VerifyEmail/VerifyEmail';
+import DashboardPage from './components/Dashboard/DashboardPage';
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path="/flights" element={<FlightHome />} />  {/* Add this route */}
                 <Route path="/register" element={<RegistrationForm />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
                 {/* Add more routes as needed */}
             </Routes>
         </Router>
