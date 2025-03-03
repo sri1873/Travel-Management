@@ -4,7 +4,6 @@ import com.tms.usermanagement.model.Role;
 import com.tms.usermanagement.model.User;
 import com.tms.usermanagement.repository.RoleRepository;
 import com.tms.usermanagement.repository.UserRepository;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,6 @@ public class UserRegistrationService {
         user.setPassword(password);
         user.setFullName(firstName + " " + lastName);
 
-
         String token = generateEmailVerificationToken(email);
         user.setVerificationToken(token);
 
@@ -50,43 +48,22 @@ public class UserRegistrationService {
             userRole.setRoleName("User");
             roleRepository.save(userRole);
         }
-        user.setEmailVerified(false); 
-        user.setRole(userRole); 
-        
+        user.setEmailVerified(false);
+        user.setRole(userRole);
+
         userRepository.save(user);
 
         emailService.sendVerificationEmail(email, token);
 
         return user;
     }
+
     private String generateEmailVerificationToken(String email) {
         return Jwts.builder()
             .setSubject(email)
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day expiry
-            .signWith(SignatureAlgorithm.HS512, "your-secret-key") // Use a secure secret key here
+            .signWith(SignatureAlgorithm.HS512, "your-secret-key")
             .compact();
-    }
-
-    public User registerGoogleUser(String firstName, String lastName, String email) {
-        Optional<User> existingUser = userRepository.findByEmail(email);
-        if (existingUser.isPresent()) {
-            return existingUser.get();
-        }
-
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setFullName(firstName + " " + lastName); 
-        user.setEmailVerified(true); 
-
-        Role userRole = roleRepository.findByRoleName("User");
-        if (userRole == null) {
-            throw new RuntimeException("Role 'User' not found.");
-        }
-        user.setRole(userRole);
-
-        return userRepository.save(user);
     }
 }

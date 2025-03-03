@@ -17,8 +17,8 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject("Email Verification");
-        message.setText("Welcome to Travel Managment System! Click the following link to verify your email to use our applcation: " + verificationUrl);
-
+        message.setText("Welcome to Travel Management System! Click the following link to verify your email: " + verificationUrl);
+        
         javaMailSender.send(message);
     }
 }

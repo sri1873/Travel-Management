@@ -3,15 +3,18 @@ package com.tms.usermanagement.controller;
 import com.tms.usermanagement.model.User;
 import com.tms.usermanagement.repository.UserRepository;
 import com.tms.usermanagement.service.UserRegistrationService;
+import com.tms.usermanagement.service.UserLoginService;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.tms.usermanagement.service.UserLoginService;
 
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,14 +31,17 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
-        System.out.println("Received user: " + user.toString());
-
         if (user.getPassword() == null || !user.getPassword().equals(user.getConfirmPassword())) {
             return ResponseEntity.badRequest().body("Password and Confirm Password must match.");
         }
 
         try {
-            userRegistrationService.registerUser(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+            userRegistrationService.registerUser(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPassword()
+            );
             return ResponseEntity.ok("User registered successfully. Please check your email for verification.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -43,57 +49,70 @@ public class UserController {
     }
 
     @PostMapping("/login/google")
-    public ResponseEntity<String> loginWithGoogle(@RequestBody String googleToken) {
+    public ResponseEntity<Map<String, String>> loginWithGoogle(@RequestBody Map<String, String> googleTokenMap) {
         try {
+            String googleToken = googleTokenMap.get("googleToken");
             User user = userLoginService.loginWithGoogle(googleToken);
-            return ResponseEntity.ok("Google login successful. Welcome, " + user.getFirstName());
+
+            String token = generateToken(user);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Google login failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("message", "Google login failed: " + e.getMessage()));
         }
     }
 
     @GetMapping("/verify-email")
     public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
         try {
-            System.out.println("Received token: " + token);  
             Claims claims = Jwts.parser()
-                .setSigningKey("your-secret-key")  
+                .setSigningKey("your-secret-key")
                 .parseClaimsJws(token)
                 .getBody();
 
-            String email = claims.getSubject();  
-            System.out.println("Decoded email: " + email);  
-
-            Optional<User> user = userRepository.findByEmail(email);
-            if (user.isPresent()) {
-                User verifiedUser = user.get();
-                verifiedUser.setEmailVerified(true);
-                userRepository.save(verifiedUser); 
+            String email = claims.getSubject();
+            Optional<User> userOpt = userRepository.findByEmail(email);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                user.setEmailVerified(true);
+                userRepository.save(user);
                 return ResponseEntity.ok("Email verified successfully!");
             } else {
-                throw new IllegalArgumentException("Invalid verification token.");
+                return ResponseEntity.badRequest().body("Invalid verification token.");
             }
         } catch (Exception e) {
-            e.printStackTrace();  
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email verification failed: " + e.getMessage());
+            return ResponseEntity.badRequest()
+                .body("Email verification failed: " + e.getMessage());
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody User loginRequest) {
         try {
-            // Attempt to login using email and password
-            User user = userLoginService.loginWithEmailPassword(loginRequest.getEmail(), loginRequest.getPassword());
+            User user = userLoginService.loginWithEmailPassword(
+                loginRequest.getEmail(),
+                loginRequest.getPassword()
+            );
 
-            // Check if the email is verified
             if (!user.getEmailVerified()) {
                 return ResponseEntity.badRequest().body("Email not verified. Please verify your email.");
             }
-
-            // If login is successful, return a success message or token for session management
             return ResponseEntity.ok("Login successful. Redirecting to dashboard...");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-        }  
         }
     }
+
+    private String generateToken(User user) {
+        return Jwts.builder()
+            .setSubject(user.getEmail())
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day
+            .signWith(SignatureAlgorithm.HS512, "your-secret-key")
+            .compact();
+    }
+}

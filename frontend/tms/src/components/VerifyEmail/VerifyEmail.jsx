@@ -23,4 +23,4 @@ const VerifyEmail = () => {
     return <div>Verifying your email...</div>;
 };
 
-export default VerifyEmail;  // Ensure you're using default export
+export default VerifyEmail;
