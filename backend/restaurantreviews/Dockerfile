@@ -7,8 +7,14 @@ WORKDIR /app
 # Copy the executable jar from the target folder into the container
 COPY target/restaurantreviews-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port your application runs on (adjust if needed)
+# Copy wait-for-it.sh from your tools directory
+COPY tools/wait-for-it.sh /wait-for-it.sh
+
+# Make the script executable
+RUN chmod +x /wait-for-it.sh
+
+# Expose the port your service listens on (adjust if needed)
 EXPOSE 8082
 
-# Set the entrypoint to run the jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Use wait-for-it to wait for mysql-discovery:3306 before starting
+ENTRYPOINT ["/wait-for-it.sh", "mysql-discovery:3306", "--", "java", "-jar", "/app/app.jar"]

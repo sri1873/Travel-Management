@@ -35,11 +35,16 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: pass
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_ROOT_HOST: "%"    # Allow connections from any host
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3306:3306"
     volumes:
       - ./init-discovery.sql:/docker-entrypoint-initdb.d/init-discovery.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   mysql-reviews:
     image: mysql:8
@@ -50,9 +55,15 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_ROOT_HOST: "%"
     ports:
-      - "3307:3306"   # Map to a different host port if needed
+      - "3307:3306"
     volumes:
       - ./init-reviews.sql:/docker-entrypoint-initdb.d/init-reviews.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 
 networks:
   default:
