@@ -23,10 +23,10 @@ public class UserRegistrationService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private EmailService emailService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private EmailService emailService;
 
     @Transactional
     public User registerUser(String firstName, String lastName, String email, String password) {
@@ -34,18 +34,14 @@ public class UserRegistrationService {
         if (existingUser.isPresent()) {
             userRepository.delete(existingUser.get());
         }
-
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        // Hash the password using BCrypt
         user.setPassword(passwordEncoder.encode(password));
         user.setFullName(firstName + " " + lastName);
-
         String token = generateEmailVerificationToken(email);
         user.setVerificationToken(token);
-
         Role userRole = roleRepository.findByRoleName("User");
         if (userRole == null) {
             userRole = new Role();
@@ -54,7 +50,6 @@ public class UserRegistrationService {
         }
         user.setEmailVerified(false);
         user.setRole(userRole);
-
         userRepository.save(user);
         emailService.sendVerificationEmail(email, token);
         return user;
@@ -64,7 +59,7 @@ public class UserRegistrationService {
         return Jwts.builder()
             .setSubject(email)
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) 
+            .setExpiration(new Date(System.currentTimeMillis() + 86400000))
             .signWith(SignatureAlgorithm.HS512, "your-secret-key")
             .compact();
     }

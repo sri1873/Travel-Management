@@ -16,22 +16,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(Customizer.withDefaults())
+            .cors(Customizer.withDefaults())   
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(
                     "/api/users/register",
                     "/api/users/login",
-                    "/api/users/login/google",   
-                    "/oauth2/authorization/google",
-                    "/api/users/verify-email"
+                    "/api/users/login/google",
+                    "/api/users/verify-email",
+                    "/api/admin/dashboard",
+                    "/api/admin/users",
+                    "/api/admin/users/{userId}"
                 ).permitAll()
-                
                 .anyRequest().authenticated()
             )
-            
             .oauth2Login(Customizer.withDefaults());
-
         return http.build();
     }
 

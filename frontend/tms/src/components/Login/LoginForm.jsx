@@ -21,7 +21,12 @@ const LoginPage = () => {
             if (res.ok) {
                 const data = await res.json();
                 localStorage.setItem('authToken', data.token);
-                navigate('/dashboard');
+                localStorage.setItem('userRole', data.role);
+                if (data.role === 'Admin') {
+                    navigate('/admin/dashboard');
+                } else {
+                    navigate('/dashboard');
+                }
             } else {
                 const errorData = await res.json();
                 setError(errorData.message || 'Google login failed, please try again.');
@@ -32,7 +37,6 @@ const LoginPage = () => {
         }
     };
 
-    // Email/password login handler
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
@@ -47,7 +51,12 @@ const LoginPage = () => {
             if (res.ok) {
                 const data = await res.json();
                 localStorage.setItem('authToken', data.token);
-                navigate('/dashboard');
+                localStorage.setItem('userRole', data.role);
+                if (data.role === 'Admin') {
+                    navigate('/admin/dashboard');
+                } else {
+                    navigate('/dashboard');
+                }
             } else {
                 const errorData = await res.json();
                 setError(errorData.message || 'Invalid credentials, please try again.');

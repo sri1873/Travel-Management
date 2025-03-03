@@ -122,4 +122,8 @@ public class User {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
+
+    public Long getUserId() {
+        return userId;
+    }
 }

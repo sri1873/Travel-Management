@@ -9,6 +9,7 @@ import './App.css'
 import Onboarding from './components/Registration/Onboarding';
 import VerifyEmail from './components/VerifyEmail/VerifyEmail';
 import DashboardPage from './components/Dashboard/DashboardPage';
+import AdminDashboard from './components/Dashboard/AdminDashboard';
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                 <Route path="/register" element={<RegistrationForm />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 {/* Add more routes as needed */}
             </Routes>
         </Router>
