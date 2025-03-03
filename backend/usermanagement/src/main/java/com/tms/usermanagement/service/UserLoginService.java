@@ -4,7 +4,6 @@ import com.tms.usermanagement.model.User;
 import com.tms.usermanagement.repository.UserRepository;
 import com.tms.usermanagement.repository.RoleRepository;
 import com.tms.usermanagement.model.Role;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.Claims;
@@ -40,7 +39,6 @@ public class UserLoginService {
 
     public User loginWithGoogle(String googleToken) {
         try {
-            // Parse the Google token using Gson
             Gson gson = new Gson();
             JsonObject payload = gson.fromJson(googleToken, JsonObject.class);
 
@@ -48,15 +46,14 @@ public class UserLoginService {
 
             Optional<User> existingUser = userRepository.findByEmail(email);
             if (existingUser.isPresent()) {
-                return existingUser.get();  // Return existing user if found
+                return existingUser.get(); 
             } else {
-                // Create a new user if not found
                 User user = new User();
                 user.setEmail(email);
                 user.setFirstName(payload.get("given_name").getAsString());
                 user.setLastName(payload.get("family_name").getAsString());
                 user.setFullName(payload.get("name").getAsString());
-                user.setEmailVerified(true);  // Google users are generally verified
+                user.setEmailVerified(true); 
 
                 Role userRole = roleRepository.findByRoleName("User");
                 if (userRole == null) {
@@ -73,21 +70,19 @@ public class UserLoginService {
         }
     }
 
-
     public User verifyEmail(String token) {
         try {
-            // Decode and verify the JWT token
             Claims claims = Jwts.parser()
-                .setSigningKey("your-secret-key")  // Same secret used during token generation
+                .setSigningKey("your-secret-key")  
                 .parseClaimsJws(token)
                 .getBody();
 
-            String email = claims.getSubject();  // Get the email from the token claims
+            String email = claims.getSubject(); 
 
             Optional<User> user = userRepository.findByEmail(email);
             if (user.isPresent()) {
                 User verifiedUser = user.get();
-                verifiedUser.setEmailVerified(true); // Mark the user as verified
+                verifiedUser.setEmailVerified(true); 
                 userRepository.save(verifiedUser);
                 return verifiedUser;
             } else {
