@@ -1,117 +1,169 @@
-/* Overall fixed-size container with a subtle border accent */
+/* Overall fixed-size container that scrolls if needed */
 .restaurant-detail-container {
-    height: 90vh;                      /* Fixed height: 90% of viewport height */
-    overflow-y: auto;                  /* Enable vertical scrolling */
-    width: 100% !important;
-    max-width: none !important;
-    margin: 20px;
-    padding: 40px 80px;
-    background-color: #ffffff;
-    border-top: 5px solid #e67e22;     /* Accent border at the top */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    color: #2c3e50;                   /* Base text colour from your scheme */
-    box-sizing: border-box;
-  }
-  
-  /* Flex container for splitting details (left) and reviews (right) */
-  .restaurant-detail-content {
-    display: flex;
-    flex-direction: row;
-    gap: 40px;
-  }
-  
-  /* Left column (restaurant details) */
-  .restaurant-detail-left {
-    flex: 1;
-  }
-  
-  /* Right column (reviews) with fixed width */
-  .restaurant-detail-right {
-    width: 300px;
-  }
-  
-  /* Title styling with accent border */
-  .restaurant-detail-title {
-    font-size: 2em;
-    margin-bottom: 0.25em;
-    color: #2c3e50;
-    padding-bottom: 0.25em;
-    border-bottom: 3px solid #e67e22;
-  }
-  
-  /* Description styling with slightly lighter text */
-  .restaurant-detail-description {
-    font-size: 1.1em;
-    margin-bottom: 1em;
-    color: #555;
-  }
-  
-  /* Information rows with consistent spacing */
-  .restaurant-detail-info {
-    margin-bottom: 0.5em;
-    font-size: 1em;
-  }
-  
-  .restaurant-detail-info strong {
-    color: #2c3e50;
-  }
-  
-  /* Average rating styling with accent colour */
-  .restaurant-detail-rating {
-    margin-top: 1.5em;
-    font-size: 1.2em;
-    color: #e67e22;
-    font-weight: bold;
-  }
-  
-  /* Reviews title with accent */
-  .restaurant-detail-reviews-title {
-    margin-top: 0;
-    margin-bottom: 0.75em;
-    font-size: 1.4em;
-    color: #2c3e50;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
-  /* Reviews list reset */
-  .restaurant-detail-reviews-list {
-    list-style-type: none;
-    padding-left: 0;
-  }
-  
-  /* Individual review card with accent left border and hover effect */
-  .restaurant-detail-review-item {
-    background-color: #f7f7f7;
-    margin-bottom: 0.75em;
-    padding: 1em;
-    border-radius: 5px;
-    border-left: 4px solid #e67e22;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .restaurant-detail-review-item:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  }
-  
-  .restaurant-detail-review-item p {
-    margin: 0.25em 0;
-  }
-  
-  /* Message when no reviews exist */
-  .restaurant-detail-no-reviews {
-    font-style: italic;
-    color: #999;
-  }
-  
-  /* Loading state styling */
-  .restaurant-detail-loading {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 1.2em;
-    color: #666;
-  }
-  
+  height: 90vh;                      /* 90% of viewport height */
+  overflow-y: auto;                  /* Enable vertical scrolling if content exceeds height */
+  width: 100% !important;
+  max-width: none !important;
+  margin: 20px;
+  padding: 40px 80px;
+  background-color: #ffffff;
+  border-top: 5px solid #e67e22;     /* Accent border with your scheme */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #2c3e50;
+  box-sizing: border-box;
+}
+
+/* Flex container for left (details) and right (reviews) columns */
+.restaurant-detail-content {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+/* Left column styling */
+.restaurant-detail-left {
+  flex: 1;
+}
+
+/* Right column styling with fixed width */
+.restaurant-detail-right {
+  width: 300px;
+}
+
+/* Title styling with accent border */
+.restaurant-detail-title {
+  font-size: 2em;
+  margin-bottom: 0.25em;
+  color: #2c3e50;
+  padding-bottom: 0.25em;
+  border-bottom: 3px solid #e67e22;
+}
+
+/* Description styling */
+.restaurant-detail-description {
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  color: #555;
+}
+
+/* Info styling */
+.restaurant-detail-info {
+  margin-bottom: 0.5em;
+  font-size: 1em;
+}
+.restaurant-detail-info strong {
+  color: #2c3e50;
+}
+
+/* Average rating styling */
+.restaurant-detail-rating {
+  margin-top: 1.5em;
+  font-size: 1.2em;
+  color: #e67e22;
+  font-weight: bold;
+}
+
+/* Reviews title styling */
+.restaurant-detail-reviews-title {
+  margin-top: 0;
+  margin-bottom: 0.75em;
+  font-size: 1.4em;
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Reviews list reset */
+.restaurant-detail-reviews-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+/* Individual review card styling */
+.restaurant-detail-review-item {
+  background-color: #f7f7f7;
+  margin-bottom: 0.75em;
+  padding: 1em;
+  border-radius: 5px;
+  border-left: 4px solid #e67e22;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.restaurant-detail-review-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.restaurant-detail-review-item p {
+  margin: 0.25em 0;
+}
+
+/* No reviews available message */
+.restaurant-detail-no-reviews {
+  font-style: italic;
+  color: #999;
+}
+
+/* Loading state styling */
+.restaurant-detail-loading {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.2em;
+  color: #666;
+}
+
+/* Review form container styling */
+.review-form-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Review form title styling */
+.review-form-title {
+  font-size: 1.2em;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Review form styling */
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.review-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9em;
+  color: #2c3e50;
+}
+.review-form select,
+.review-form textarea {
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+}
+.review-form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+.review-form button {
+  width: 150px;
+  padding: 8px;
+  background-color: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.review-form button:hover {
+  background-color: #34495e;
+}
