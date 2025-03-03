@@ -4,8 +4,10 @@ import RegistrationForm from './components/Registration/RegistrationForm';
 import Home from './components/Home';  // Your home component or just a placeholder
 import FlightHome from './components/Flights/FlightHome';
 import Navbar from './components/Navbar';
+import LoginForm from './components/Login/LoginForm'
 import './App.css'
 import Onboarding from './components/Registration/Onboarding';
+import VerifyEmail from './components/VerifyEmail/VerifyEmail';
 
 const App = () => {
     return (
@@ -15,9 +17,10 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Onboarding />} />  {/*Add this route*/}
                 <Route path="/home" element={<Home />} />  {/*Add this route*/}
-                <Route path="/login" element={<FlightHome />} />  {/* Add this route */}
+                <Route path="/login" element={<LoginForm />} />  {/* Add this route */}
                 <Route path="/flights" element={<FlightHome />} />  {/* Add this route */}
                 <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/verify-email" element={<VerifyEmail />} />
                 {/* Add more routes as needed */}
             </Routes>
         </Router>

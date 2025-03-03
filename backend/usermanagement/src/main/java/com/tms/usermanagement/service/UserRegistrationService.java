@@ -5,12 +5,13 @@ import com.tms.usermanagement.model.User;
 import com.tms.usermanagement.repository.RoleRepository;
 import com.tms.usermanagement.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
-
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
+import jakarta.transaction.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -23,43 +24,48 @@ public class UserRegistrationService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private EmailService emailService; 
+    private EmailService emailService;
 
     @Transactional
     public User registerUser(String firstName, String lastName, String email, String password) {
         Optional<User> existingUser = userRepository.findByEmail(email);
         if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("User already exists with the provided email.");
+            userRepository.delete(existingUser.get());
         }
 
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPassword(password);  
+        user.setPassword(password);
         user.setFullName(firstName + " " + lastName);
 
-        
-        String token = DigestUtils.md5DigestAsHex(email.getBytes());
+
+        String token = generateEmailVerificationToken(email);
         user.setVerificationToken(token);
 
-
-        System.out.println("Fetching role 'User' from the database...");
         Role userRole = roleRepository.findByRoleName("User");
         if (userRole == null) {
             userRole = new Role();
             userRole.setRoleName("User");
             roleRepository.save(userRole);
-            System.out.println("Role 'User' created and saved.");
-        } else {
-            System.out.println("Successfully fetched 'User' role: " + userRole.getRoleName());
         }
-        
         user.setEmailVerified(false); 
+        user.setRole(userRole); 
+        
         userRepository.save(user);
+
         emailService.sendVerificationEmail(email, token);
 
         return user;
+    }
+    private String generateEmailVerificationToken(String email) {
+        return Jwts.builder()
+            .setSubject(email)
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day expiry
+            .signWith(SignatureAlgorithm.HS512, "your-secret-key") // Use a secure secret key here
+            .compact();
     }
 
     public User registerGoogleUser(String firstName, String lastName, String email) {
@@ -73,7 +79,7 @@ public class UserRegistrationService {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setFullName(firstName + " " + lastName); 
-        user.setEmailVerified(true);  // Automatically mark as verified for Google users
+        user.setEmailVerified(true); 
 
         Role userRole = roleRepository.findByRoleName("User");
         if (userRole == null) {

@@ -3,10 +3,11 @@ package com.tms.usermanagement.controller;
 import com.tms.usermanagement.model.User;
 import com.tms.usermanagement.repository.UserRepository;
 import com.tms.usermanagement.service.UserRegistrationService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import com.tms.usermanagement.service.UserLoginService;
 
@@ -27,12 +28,12 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
-        System.out.println("Received user: " + user.toString());  
-    
+        System.out.println("Received user: " + user.toString());
+
         if (user.getPassword() == null || !user.getPassword().equals(user.getConfirmPassword())) {
             return ResponseEntity.badRequest().body("Password and Confirm Password must match.");
         }
-    
+
         try {
             userRegistrationService.registerUser(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
             return ResponseEntity.ok("User registered successfully. Please check your email for verification.");
@@ -40,7 +41,6 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
 
     @PostMapping("/login/google")
     public ResponseEntity<String> loginWithGoogle(@RequestBody String googleToken) {
@@ -55,13 +55,30 @@ public class UserController {
     @GetMapping("/verify-email")
     public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
         try {
-            User verifiedUser = userLoginService.verifyEmail(token);
-            return ResponseEntity.ok("Email verified successfully!");
+            System.out.println("Received token: " + token);  
+            Claims claims = Jwts.parser()
+                .setSigningKey("your-secret-key")  
+                .parseClaimsJws(token)
+                .getBody();
+
+            String email = claims.getSubject();  
+            System.out.println("Decoded email: " + email);  
+
+            Optional<User> user = userRepository.findByEmail(email);
+            if (user.isPresent()) {
+                User verifiedUser = user.get();
+                verifiedUser.setEmailVerified(true);
+                userRepository.save(verifiedUser); 
+                return ResponseEntity.ok("Email verified successfully!");
+            } else {
+                throw new IllegalArgumentException("Invalid verification token.");
+            }
         } catch (Exception e) {
+            e.printStackTrace();  
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email verification failed: " + e.getMessage());
         }
     }
-    
+
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody User loginRequest) {
         try {
@@ -77,8 +94,6 @@ public class UserController {
             return ResponseEntity.ok("Login successful. Redirecting to dashboard...");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (UsernameNotFoundException e) {
-            return ResponseEntity.badRequest().body("Invalid email or password.");
+        }  
         }
     }
-}

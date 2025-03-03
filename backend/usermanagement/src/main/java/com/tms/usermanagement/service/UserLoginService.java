@@ -5,8 +5,10 @@ import com.tms.usermanagement.repository.UserRepository;
 import com.tms.usermanagement.repository.RoleRepository;
 import com.tms.usermanagement.model.Role;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -38,23 +40,23 @@ public class UserLoginService {
 
     public User loginWithGoogle(String googleToken) {
         try {
-            String googleClientId = "DONTCOMMIT";  
+            // Parse the Google token using Gson
+            Gson gson = new Gson();
+            JsonObject payload = gson.fromJson(googleToken, JsonObject.class);
 
-            JsonFactory factory = JsonFactory.class();
-            GoogleIdToken googleIdToken = GoogleIdToken.parse(factory, googleToken);
+            String email = payload.get("email").getAsString(); // Get email from the payload
 
-            GoogleIdToken.Payload payload = googleIdToken.getPayload();
-            String email = payload.getEmail();
             Optional<User> existingUser = userRepository.findByEmail(email);
             if (existingUser.isPresent()) {
-                return existingUser.get(); 
+                return existingUser.get();  // Return existing user if found
             } else {
+                // Create a new user if not found
                 User user = new User();
                 user.setEmail(email);
-                user.setFirstName((String) payload.get("given_name"));
-                user.setLastName((String) payload.get("family_name"));
-                user.setFullName((String) payload.get("name"));
-                user.setEmailVerified(true);  
+                user.setFirstName(payload.get("given_name").getAsString());
+                user.setLastName(payload.get("family_name").getAsString());
+                user.setFullName(payload.get("name").getAsString());
+                user.setEmailVerified(true);  // Google users are generally verified
 
                 Role userRole = roleRepository.findByRoleName("User");
                 if (userRole == null) {
@@ -71,16 +73,28 @@ public class UserLoginService {
         }
     }
 
+
     public User verifyEmail(String token) {
-        Optional<User> user = userRepository.findByVerificationToken(token);
+        try {
+            // Decode and verify the JWT token
+            Claims claims = Jwts.parser()
+                .setSigningKey("your-secret-key")  // Same secret used during token generation
+                .parseClaimsJws(token)
+                .getBody();
 
-        if (user.isEmpty()) {
-            throw new IllegalArgumentException("Invalid verification token.");
+            String email = claims.getSubject();  // Get the email from the token claims
+
+            Optional<User> user = userRepository.findByEmail(email);
+            if (user.isPresent()) {
+                User verifiedUser = user.get();
+                verifiedUser.setEmailVerified(true); // Mark the user as verified
+                userRepository.save(verifiedUser);
+                return verifiedUser;
+            } else {
+                throw new IllegalArgumentException("Invalid verification token.");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Token verification failed", e);
         }
-
-        User verifiedUser = user.get();
-        verifiedUser.setEmailVerified(true);
-        userRepository.save(verifiedUser);
-        return verifiedUser;  
     }
 }
