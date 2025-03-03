@@ -9,7 +9,7 @@ public class ReviewsClient {
 
     private final RestTemplate restTemplate;
     // The Reviews microservice is running on port 8082
-    private final String reviewsServiceBaseUrl = "http://localhost:8082/api/reviews/restaurant/";
+    private final String reviewsServiceBaseUrl = "http://restaurant-reviews:8082/api/reviews/restaurant/";
 
     public ReviewsClient() {
         this.restTemplate = new RestTemplate();

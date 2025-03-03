@@ -3,11 +3,11 @@ spring:
     gateway:
       routes:
         - id: restaurant-discovery
-          uri: http://localhost:8081
+          uri: http://restaurant-discovery:8081
           predicates:
             - Path=/api/restaurants/**
         - id: restaurant-reviews
-          uri: http://localhost:8082   # URL of your reviews microservice
+          uri: http://restaurant-reviews:8082   # URL of your reviews microservice
           predicates:
             - Path=/api/reviews/**
 
