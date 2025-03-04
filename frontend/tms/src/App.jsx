@@ -12,6 +12,7 @@ import VerifyEmail from './components/VerifyEmail/VerifyEmail';
 import DashboardPage from './components/Dashboard/DashboardPage';
 import AdminDashboard from './components/Dashboard/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import ChangePasswordForm from './components/Password/ChangePasswordForm';
 import './App.css';
 
 const App = () => {
@@ -38,6 +39,8 @@ const App = () => {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/change-password" element={<ChangePasswordForm />} />
+
       </Routes>
     </Router>
   );

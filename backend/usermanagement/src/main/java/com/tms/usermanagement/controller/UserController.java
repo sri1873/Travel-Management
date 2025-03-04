@@ -10,6 +10,8 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -26,6 +28,9 @@ public class UserController {
 
     @Autowired
     private UserLoginService userLoginService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
@@ -99,6 +104,32 @@ public class UserController {
         }
     }
 
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            if (request.getOldPassword() == null || !passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Current password is incorrect.");
+            }
+        }
+
+        if (request.getNewPassword() == null || request.getNewPassword().trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("New password cannot be empty.");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Password changed successfully.");
+    }
+
+
     private String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
@@ -107,5 +138,23 @@ public class UserController {
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(SignatureAlgorithm.HS512, "your-secret-key")
                 .compact();
+    }
+
+    public static class ChangePasswordRequest {
+        private String oldPassword;  
+        private String newPassword;
+
+        public String getOldPassword() {
+            return oldPassword;
+        }
+        public void setOldPassword(String oldPassword) {
+            this.oldPassword = oldPassword;
+        }
+        public String getNewPassword() {
+            return newPassword;
+        }
+        public void setNewPassword(String newPassword) {
+            this.newPassword = newPassword;
+        }
     }
 }
