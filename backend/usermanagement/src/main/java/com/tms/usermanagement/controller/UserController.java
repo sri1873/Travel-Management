@@ -32,7 +32,6 @@ public class UserController {
         if (user.getPassword() == null || !user.getPassword().equals(user.getConfirmPassword())) {
             return ResponseEntity.badRequest().body("Password and Confirm Password must match.");
         }
-
         try {
             userRegistrationService.registerUser(
                 user.getFirstName(),
@@ -54,6 +53,7 @@ public class UserController {
             String token = generateToken(user);
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
+            response.put("role", user.getRole().getRoleName());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -68,6 +68,7 @@ public class UserController {
             String token = generateToken(user);
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
+            response.put("role", user.getRole().getRoleName());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -79,10 +80,9 @@ public class UserController {
     public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
         try {
             Claims claims = Jwts.parser()
-                .setSigningKey("your-secret-key")
-                .parseClaimsJws(token)
-                .getBody();
-
+                    .setSigningKey("your-secret-key")
+                    .parseClaimsJws(token)
+                    .getBody();
             String email = claims.getSubject();
             Optional<User> userOpt = userRepository.findByEmail(email);
             if (userOpt.isPresent()) {
@@ -95,16 +95,17 @@ public class UserController {
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest()
-                .body("Email verification failed: " + e.getMessage());
+                    .body("Email verification failed: " + e.getMessage());
         }
     }
 
     private String generateToken(User user) {
         return Jwts.builder()
-            .setSubject(user.getEmail())
-            .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 86400000))
-            .signWith(SignatureAlgorithm.HS512, "your-secret-key")
-            .compact();
+                .setSubject(user.getEmail())
+                .claim("role", user.getRole().getRoleName())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
+                .signWith(SignatureAlgorithm.HS512, "your-secret-key")
+                .compact();
     }
 }

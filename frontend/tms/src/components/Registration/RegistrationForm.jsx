@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import './RegistrationForm.css';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../store/userSlice';
 
 const RegistrationForm = () => {
+    const dispatch = useDispatch();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -53,9 +56,12 @@ const RegistrationForm = () => {
 
             if (res.ok) {
                 const data = await res.json();
+                dispatch(setCredentials({ token: data.token, role: data.role }));
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('userRole', data.role);
                 localStorage.setItem('authToken', data.token);
                 console.log('Google login success, token =', data.token);
-                navigate('/flights');
+                navigate('/dashboard');
             } else {
                 const errorData = await res.json();
                 console.log('Google login failed:', errorData);

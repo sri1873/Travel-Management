@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import './LoginForm.css';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../store/userSlice';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleGoogleLogin = async (response) => {
         const { credential } = response;
@@ -20,8 +23,14 @@ const LoginPage = () => {
     
             if (res.ok) {
                 const data = await res.json();
+                dispatch(setCredentials({ token: data.token, role: data.role }));
                 localStorage.setItem('authToken', data.token);
-                navigate('/dashboard');
+                localStorage.setItem('userRole', data.role);
+                if (data.role === 'Admin') {
+                    navigate('/admin/dashboard');
+                } else {
+                    navigate('/dashboard');
+                }
             } else {
                 const errorData = await res.json();
                 setError(errorData.message || 'Google login failed, please try again.');
@@ -32,7 +41,6 @@ const LoginPage = () => {
         }
     };
 
-    // Email/password login handler
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
@@ -46,8 +54,14 @@ const LoginPage = () => {
     
             if (res.ok) {
                 const data = await res.json();
+                dispatch(setCredentials({ token: data.token, role: data.role }));
                 localStorage.setItem('authToken', data.token);
-                navigate('/dashboard');
+                localStorage.setItem('userRole', data.role);
+                if (data.role === 'Admin') {
+                    navigate('/admin/dashboard');
+                } else {
+                    navigate('/dashboard');
+                }
             } else {
                 const errorData = await res.json();
                 setError(errorData.message || 'Invalid credentials, please try again.');

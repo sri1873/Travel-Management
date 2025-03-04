@@ -77,14 +77,12 @@ public class UserLoginService {
     public User loginWithEmailPassword(String email, String rawPassword) {
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
             throw new IllegalArgumentException("Invalid password.");
         }
         if (!user.getEmailVerified()) {
             throw new IllegalArgumentException("Email not verified. Please verify your email.");
         }
-
         return user;
-    }
+    }  
 }
