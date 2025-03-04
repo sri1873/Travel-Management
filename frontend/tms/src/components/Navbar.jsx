@@ -18,7 +18,7 @@ const NavBar = () => {
   };
 
   if (!isLoggedIn) {
-    // No extra items if not logged in, just register login dropdown
+    // logged in dropdown
     return (
       <nav className="navbar sticky-top navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div className="container-fluid justify-content-between">
@@ -128,14 +128,9 @@ const NavBar = () => {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <a className="dropdown-item" href="#">
-                    Placeholder 1
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Placeholder 2
-                  </a>
+                  <Link className="dropdown-item" to="/change-password">
+                    Change Password
+                  </Link>
                 </li>
               </ul>
             </li>

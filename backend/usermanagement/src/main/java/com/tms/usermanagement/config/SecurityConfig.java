@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ public class SecurityConfig {
         http
             .cors(Customizer.withDefaults())   
             .csrf(csrf -> csrf.disable())
+            .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(
                     "/api/users/register",
@@ -26,7 +28,8 @@ public class SecurityConfig {
                     "/api/users/verify-email",
                     "/api/admin/dashboard",
                     "/api/admin/users",
-                    "/api/admin/users/{userId}"
+                    "/api/admin/users/{userId}",
+                    "/api/users/change-password"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
