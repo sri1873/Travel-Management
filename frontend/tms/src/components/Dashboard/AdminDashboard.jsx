@@ -7,11 +7,9 @@ const AdminDashboard = () => {
   const [adminMessage, setAdminMessage] = useState('');
   const [users, setUsers] = useState([]);
 
-  // Fetch the welcome message + user list on component mount
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        // 1. Fetch admin welcome message
         const resDashboard = await fetch('http://localhost:8080/api/admin/dashboard', {
           headers: {
             'Content-Type': 'application/json',
@@ -25,7 +23,6 @@ const AdminDashboard = () => {
           navigate('/login');
         }
 
-        // 2. Fetch all users
         const resUsers = await fetch('http://localhost:8080/api/admin/users', {
           headers: {
             'Content-Type': 'application/json',
