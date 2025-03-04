@@ -1,5 +1,6 @@
 package com.tms.hotelmanagment.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -13,6 +14,7 @@ public class Room {
     private Integer available;
 
     @ManyToOne
+    @JsonBackReference
     private Hotel hotel;
 
     // Getters and Setters
