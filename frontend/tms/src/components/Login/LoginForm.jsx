@@ -59,9 +59,11 @@ const LoginPage = () => {
                 localStorage.setItem('userRole', data.role);
                 if (data.role === 'Admin') {
                     navigate('/admin/dashboard');
+                } else if (data.role === 'TravelAdmin') {
+                    navigate('/travel-admin');
                 } else {
                     navigate('/dashboard');
-                }
+             }
             } else {
                 const errorData = await res.json();
                 setError(errorData.message || 'Invalid credentials, please try again.');

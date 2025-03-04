@@ -95,6 +95,48 @@ const NavBar = () => {
         </div>
       </nav>
     );
+  } else if (role === 'TravelAdmin') {
+      return (
+        <nav className="navbar sticky-top navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+          <div className="container-fluid">
+            <ul className="navbar-nav me-auto">
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle d-flex align-items-center"
+                  href="#"
+                  id="brandDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="public/icon.png"
+                    alt="Logo"
+                    width="50"
+                    height="40"
+                    className="d-inline-block align-text-top"
+                  />
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="brandDropdown">
+                  <li>
+                    <button className="dropdown-item" onClick={onLogoutClick}>
+                      Logout
+                    </button>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <span className="dropdown-item">
+                      Welcome Travel Admin, add flight details here.
+                    </span>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      );
   } else {
     //User navbar
     return (
