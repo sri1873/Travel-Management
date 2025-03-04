@@ -6,6 +6,7 @@ import FlightHome from './components/Flights/FlightHome';
 import Navbar from './components/Navbar';
 import './App.css'
 import Onboarding from './components/Registration/Onboarding';
+import HotelDiscovery from './components/Hotels/HotelDiscovery/HotelDiscovery';
 
 const App = () => {
     return (
@@ -18,6 +19,7 @@ const App = () => {
                 <Route path="/login" element={<FlightHome />} />  {/* Add this route */}
                 <Route path="/flights" element={<FlightHome />} />  {/* Add this route */}
                 <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/hotels" element={<HotelDiscovery />} />
                 {/* Add more routes as needed */}
             </Routes>
         </Router>
