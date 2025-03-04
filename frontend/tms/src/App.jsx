@@ -5,6 +5,7 @@ import { setCredentials } from './store/userSlice';
 import RegistrationForm from './components/Registration/RegistrationForm';
 import Home from './components/Home';
 import FlightHome from './components/Flights/FlightHome';
+import HotelDiscovery from './components/Hotels/HotelDiscovery/HotelDiscovery'
 import Navbar from './components/Navbar';
 import LoginForm from './components/Login/LoginForm';
 import Onboarding from './components/Registration/Onboarding';
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/flights" element={<FlightHome />} />
+        <Route path="/hotels" element={<HotelDiscovery />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/dashboard" element={<DashboardPage />} />
