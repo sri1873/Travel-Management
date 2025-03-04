@@ -1,8 +1,9 @@
 package com.tms.hotelmanagment.model;
 
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
@@ -16,7 +17,8 @@ public class Hotel {
     private String description;
     private Double pricePerNight;
     
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Room> rooms;
 
     // Getters and Setters

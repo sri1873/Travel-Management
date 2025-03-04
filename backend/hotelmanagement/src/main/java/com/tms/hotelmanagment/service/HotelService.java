@@ -13,6 +13,11 @@ public class HotelService {
 
     @Autowired
     private HotelRepository hotelRepository;
+    
+    // Method to get all hotels
+    public List<Hotel> getAllHotels() {
+        return hotelRepository.findAll();
+    }
 
     // Fetch hotels by location
     public List<Hotel> searchHotelsByLocation(String location) {

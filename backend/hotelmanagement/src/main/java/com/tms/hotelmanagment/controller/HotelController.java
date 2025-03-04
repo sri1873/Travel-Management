@@ -15,6 +15,12 @@ public class HotelController {
     @Autowired
     private HotelService hotelService;
 
+    // Endpoint to get all hotels
+    @GetMapping("/getAll")
+    public List<Hotel> getAllHotels() {
+        return hotelService.getAllHotels();
+    }
+
     // Endpoint to search hotels by location
     @GetMapping("/search")
     public List<Hotel> searchHotels(@RequestParam String location) {
