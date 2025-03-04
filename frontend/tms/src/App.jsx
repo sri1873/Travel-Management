@@ -13,6 +13,7 @@ import DashboardPage from './components/Dashboard/DashboardPage';
 import AdminDashboard from './components/Dashboard/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import ChangePasswordForm from './components/Password/ChangePasswordForm';
+import TravelAdminDashboard from './components/Dashboard/TravelAdminDashboard';
 import './App.css';
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/change-password" element={<ChangePasswordForm />} />
+        <Route path="/travel-admin" element={<TravelAdminDashboard />} />
 
       </Routes>
     </Router>
