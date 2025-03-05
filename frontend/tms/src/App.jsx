@@ -16,6 +16,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ChangePasswordForm from './components/Password/ChangePasswordForm';
 import TravelAdminDashboard from './components/Dashboard/TravelAdminDashboard';
 import './App.css';
+import HotelDetails from './components/Hotels/HotelDetails/HotelDetails';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/flights" element={<FlightHome />} />
         <Route path="/hotels" element={<HotelDiscovery />} />
+        <Route path="/hotels/:id" element={<HotelDetails/>} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/dashboard" element={<DashboardPage />} />

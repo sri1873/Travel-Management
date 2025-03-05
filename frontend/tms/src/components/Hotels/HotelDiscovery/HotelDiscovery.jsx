@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; 
 import './HotelDiscovery.css';
 
 const HotelDiscovery = () => {
@@ -31,6 +32,10 @@ const HotelDiscovery = () => {
 
     return (
       <div className="hotel-discovery">
+
+        <h1>Explore Your Next Getaway</h1>
+        <p class="slogan">Find Your Perfect Stay, Anywhere!</p>
+
         {/* Search bar */}
         <div className="search-bar">
           <input
@@ -52,7 +57,10 @@ const HotelDiscovery = () => {
                 <h3>{hotel.name}</h3>
                 <p>{hotel.location}</p>
                 <p>${hotel.pricePerNight} per night</p>
-                <button>View Details</button>
+                {/* Link to the hotel details page with the hotel's ID */}
+                <Link to={`/hotels/${hotel.id}`}>
+                  <button>View Details</button>
+                </Link>
               </div>
             ))
           )}
