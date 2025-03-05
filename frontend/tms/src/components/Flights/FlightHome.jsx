@@ -27,7 +27,10 @@ const FlightHome = () => {
                         <input type="password" class="form-control" id="floatingPassword" placeholder="Password" />
                         <label for="floatingPassword">Return</label>
                     </div>
-                    <button className="search-btn">Search</button>
+                    <button className="search-btn" onClick={() => (window.location.href ="/Travel-Management/flights-search")}>
+                        Search
+                    </button>
+
                 </div>
             </div>
             <div className="flight-pics">
