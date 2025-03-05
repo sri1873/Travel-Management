@@ -18,4 +18,8 @@ public class RoomService {
     public List<Room> getRoomsByHotelId(Long hotelId) {
         return roomRepository.findByHotelId(hotelId);
     }
+
+    public Room getRoomById(Long roomId){
+        return roomRepository.findRoomById(roomId);
+    }
 }

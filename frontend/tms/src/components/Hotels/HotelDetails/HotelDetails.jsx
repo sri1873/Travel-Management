@@ -1,6 +1,6 @@
 // src/components/HotelDetails.js
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // useNavigate for back button
+import { useParams, Link } from 'react-router-dom'; // useNavigate for back button
 import './HotelDetails.css';
 
 const HotelDetails = () => {
@@ -38,6 +38,11 @@ const HotelDetails = () => {
               <h4>{room.type}</h4>
               <p><strong>Price:</strong> ${room.price} per night</p>
               <p><strong>Available:</strong> {room.available}</p>
+              {room.available > 0 && (
+                <Link to={`/booking/${hotel.id}/${room.id}`}>
+                  <button>Book Now</button>
+                </Link>
+              )}
             </div>
           ))}
         </div>
