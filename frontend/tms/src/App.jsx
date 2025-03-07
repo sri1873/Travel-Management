@@ -1,17 +1,48 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import RegistrationForm from './components/Registration/RegistrationForm';
-import Home from './components/Home'; // Your existing home component
+import React, { useEffect } from 'react';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from './store/userSlice';
+import RegistrationForm from './components/UserManagement/RegistrationForm';
+import FlightHome from './components/Flights/FlightHome';
+import Navbar from './components/Navigation/Navbar';
+import LoginForm from './components/UserManagement/LoginForm';
+import Onboarding from './components/OnBoarding/Onboarding';
+import VerifyEmail from './components/UserManagement/VerifyEmail';
+import DashboardPage from './components/Dashboard/DashboardPage';
+import AdminDashboard from './components/Dashboard/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import ChangePasswordForm from './components/UserManagement/ChangePasswordForm';
+import TravelAdminDashboard from './components/Dashboard/TravelAdminDashboard';
 import RestaurantList from './components/Restaurant/RestaurantList';
 import RestaurantDetail from './components/Restaurant/RestaurantDetail';
+import './App.css';
+import FlightSearch from './components/Flights/FlightSearch';
 
 const App = () => {
+    const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem('authToken');
+    //     const role = localStorage.getItem('userRole');
+    //     if (token) {
+    //         dispatch(setCredentials({ token, role }));
+    //     }
+    // }, [dispatch]);
     return (
-        <Router>
+        <Router >
+            <Navbar />
             <Routes>
-                <Route path="/" element={<Home />} />
+                {/* <Route path="/" element={<ProtectedRoute />} /> */}
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/flights" element={<FlightHome />} />
+                <Route path="/flights-search" element={<FlightSearch/>} />
                 <Route path="/register" element={<RegistrationForm />} />
-                {/*Routes for restaurant discovery */}
+                <Route path="/verify-email" element={<VerifyEmail />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/onboarding" element={<Onboarding />} />
+                <Route path="/change-password" element={<ChangePasswordForm />} />
+                <Route path="/travel-admin" element={<TravelAdminDashboard />} />
                 <Route path="/restaurants" element={<RestaurantList />} />
                 <Route path="/restaurants/:id" element={<RestaurantDetail />} />
             </Routes>
