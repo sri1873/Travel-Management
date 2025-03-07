@@ -1,7 +1,6 @@
 package com.tms.hotelmanagment.model;
 
 import java.util.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +18,6 @@ public class Booking {
     private int numberOfGuests;
     private Long hotelId;
     private Long roomId;
-
 
     // Getters and Setters
     public Long getId() {
@@ -70,4 +68,3 @@ public class Booking {
         this.numberOfGuests = numberOfGuests;
     }
 }
-

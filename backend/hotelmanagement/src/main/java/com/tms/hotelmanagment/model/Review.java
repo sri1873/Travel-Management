@@ -13,8 +13,8 @@ public class Review {
     private Long id;
 
     private String reviewText;
-    private int rating; // Rating from 1 to 5
-    private Long hotelId; 
+    private int rating;
+    private Long hotelId;
 
     // Getters and Setters
     public Long getId() {

@@ -16,7 +16,7 @@ public class Hotel {
     private String location;
     private String description;
     private Double pricePerNight;
-    
+
     @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Room> rooms;

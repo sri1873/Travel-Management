@@ -2,12 +2,10 @@ package com.tms.hotelmanagment.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import com.tms.hotelmanagment.model.Hotel;
 import com.tms.hotelmanagment.model.Review;
 import com.tms.hotelmanagment.service.HotelService;
 import com.tms.hotelmanagment.service.ReviewService;
-
 import java.util.List;
 
 @RestController
@@ -38,16 +36,16 @@ public class HotelController {
         return hotelService.getHotelById(id);
     }
 
-
+    // Endpoint to get specific hotel reviews
     @GetMapping("/{id}/reviews")
     public List<Review> getHotelReviews(@PathVariable Long id) {
         return reviewService.getReviewsByHotel(id);
     }
 
+    // Endpoint to add a review to a hotel
     @PostMapping("/{id}/reviews")
     public Review addHotelReview(@PathVariable Long id, @RequestBody Review newReview) {
         newReview.setHotelId(id);// Associate the review with the hotel
         return reviewService.addReview(id, newReview);
     }
 }
-

@@ -2,7 +2,6 @@ package com.tms.hotelmanagment.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import com.tms.hotelmanagment.model.Booking;
 import com.tms.hotelmanagment.service.BookingService;
 
@@ -16,9 +15,6 @@ public class BookingController {
     // Endpoint to create a new booking
     @PostMapping("/createBooking")
     public Booking createBooking(@RequestBody Booking booking) {
-        Long roomId = booking.getRoomId();
-        Long hotelId = booking.getHotelId();
-        System.out.println("Received Room ID and Hotel ID: " + roomId + " " + hotelId); 
         return bookingService.createBooking(booking);
     }
 
@@ -28,4 +24,3 @@ public class BookingController {
         return bookingService.getBookingById(id);
     }
 }
-

@@ -1,7 +1,6 @@
 package com.tms.hotelmanagment.repository;
 
 import com.tms.hotelmanagment.model.Review;
-
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
