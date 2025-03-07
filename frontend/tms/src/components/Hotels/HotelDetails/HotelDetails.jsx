@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import './HotelDetails.css';
 
 const HotelDetails = () => {
-  const { id } = useParams(); // Get the hotel ID from the URL
+  const { id } = useParams();
   const [hotel, setHotel] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState('');
@@ -23,6 +23,7 @@ const HotelDetails = () => {
       .catch((error) => console.error('Error fetching reviews:', error));
   }, [id]);
 
+  // Add a review for the hotel
   const handleSubmitReview = (e) => {
     e.preventDefault();
     fetch(`http://localhost:8080/api/hotels/${id}/reviews`, {
@@ -32,7 +33,7 @@ const HotelDetails = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setReviews([...reviews, data]); // Add new review to the list
+        setReviews([...reviews, data]);
         setReviewText('');
         setRating(1);
       })
@@ -45,7 +46,6 @@ const HotelDetails = () => {
 
   return (
     <div className="hotel-details-container">
-      {/* Hotel Details Section */}
       <div className="hotel-details">
         <h2 className="hotel-name">{hotel.name}</h2>
         <p><strong>Location:</strong> {hotel.location}</p>
@@ -53,7 +53,6 @@ const HotelDetails = () => {
         <p><strong>Price per Night:</strong> ${hotel.pricePerNight}</p>
         <p><strong>Rooms Available:</strong> {hotel.rooms.length}</p>
 
-        {/* Available Rooms */}
         <div className="room-list">
           <h3>Available Rooms</h3>
           {hotel.rooms.map((room) => (
@@ -71,7 +70,6 @@ const HotelDetails = () => {
         </div>
       </div>
 
-      {/* Reviews Section */}
       <div className="reviews-section">
         <h3>Reviews</h3>
         {reviews.map((review) => (

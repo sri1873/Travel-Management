@@ -1,9 +1,7 @@
-/* src/styles/HotelBooking.css */
-
 .hotel-booking-container {
-    max-height: 100vh;
-    background-color: #f4f4f9;
-    margin: 0;
+  max-height: 100vh;
+  background-color: #f4f4f9;
+  margin: 0;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -12,51 +10,50 @@
 }
 
 .hotel-booking {
-    width: 50%;
-    margin: 0 auto;
-    margin-top: 10px;
-    padding: 30px;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .hotel-booking h2 {
-    font-size: 28px;
-    color: #2c3e50;
-    margin-bottom: 20px;
-  }
-  
-  .booking-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .booking-form label {
-    font-size: 18px;
-    margin: 10px 0 5px;
-  }
-  
-  .booking-form input {
-    padding: 10px;
-    font-size: 16px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-  }
-  
-  .booking-form button {
-    background-color: #16a085;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .booking-form button:hover {
-    background-color: #1abc9c;
-  }
-  
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 10px;
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.hotel-booking h2 {
+  font-size: 28px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-form label {
+  font-size: 18px;
+  margin: 10px 0 5px;
+}
+
+.booking-form input {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.booking-form button {
+  background-color: #16a085;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.booking-form button:hover {
+  background-color: #1abc9c;
+}
