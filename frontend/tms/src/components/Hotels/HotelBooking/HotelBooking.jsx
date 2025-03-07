@@ -1,4 +1,4 @@
-// src/components/HotelBooking.js
+// src/components/HotelBooking.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // useParams to get room id
 import './HotelBooking.css';
@@ -22,9 +22,34 @@ const HotelBooking = () => {
   }, [roomId]);
 
   const handleBooking = () => {
-    // Handle booking logic (you can add more details like user info, payment here)
-    alert('Booking successful!');
-    navigate('/'); // Redirect to home or hotel discovery page after booking
+    // Prepare booking data
+    const bookingData = {
+      checkInDate: bookingDetails.checkInDate,
+      checkOutDate: bookingDetails.checkOutDate,
+      numberOfGuests: bookingDetails.numberOfGuests,
+      roomId: parseInt(roomId, 10), 
+      hotelId: parseInt(hotelId, 10)// Pass the roomId to link to the correct room
+    };
+
+    console.log("Booking Data:", bookingData);
+  
+    // Send booking data to backend
+    fetch('http://localhost:8080/api/bookings/createBooking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookingData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert('Booking successful!');
+        navigate('/hotels'); // Redirect to home or hotel discovery page after booking
+      })
+      .catch((error) => {
+        console.error('Error booking room:', error);
+        alert('Error booking room. Please try again later.');
+      });
   };
 
   if (!room) {

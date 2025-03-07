@@ -14,8 +14,11 @@ public class BookingController {
     private BookingService bookingService;
 
     // Endpoint to create a new booking
-    @PostMapping
+    @PostMapping("/createBooking")
     public Booking createBooking(@RequestBody Booking booking) {
+        Long roomId = booking.getRoomId();
+        Long hotelId = booking.getHotelId();
+        System.out.println("Received Room ID and Hotel ID: " + roomId + " " + hotelId); 
         return bookingService.createBooking(booking);
     }
 
