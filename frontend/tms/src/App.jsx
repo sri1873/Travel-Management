@@ -13,6 +13,8 @@ import AdminDashboard from './components/Dashboard/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import ChangePasswordForm from './components/UserManagement/ChangePasswordForm';
 import TravelAdminDashboard from './components/Dashboard/TravelAdminDashboard';
+import RestaurantList from './components/Restaurant/RestaurantList';
+import RestaurantDetail from './components/Restaurant/RestaurantDetail';
 import './App.css';
 import FlightSearch from './components/Flights/FlightSearch';
 
@@ -41,6 +43,8 @@ const App = () => {
                 <Route path="/onboarding" element={<Onboarding />} />
                 <Route path="/change-password" element={<ChangePasswordForm />} />
                 <Route path="/travel-admin" element={<TravelAdminDashboard />} />
+                <Route path="/restaurants" element={<RestaurantList />} />
+                <Route path="/restaurants/:id" element={<RestaurantDetail />} />
             </Routes>
         </Router>
     );
