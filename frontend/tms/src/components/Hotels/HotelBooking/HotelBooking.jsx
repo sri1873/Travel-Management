@@ -57,6 +57,7 @@ const HotelBooking = () => {
   }
 
   return (
+  <div className="hotel-booking-container">
     <div className="hotel-booking">
       <h2>Booking for {room.type} </h2>
       <p><strong>Price:</strong> ${room.price} per night</p>
@@ -87,6 +88,7 @@ const HotelBooking = () => {
 
         <button onClick={handleBooking}>Confirm Booking</button>
       </div>
+    </div>
     </div>
   );
 };
