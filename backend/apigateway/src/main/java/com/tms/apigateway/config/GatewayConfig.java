@@ -15,7 +15,7 @@ public class GatewayConfig {
                 .path("/api/restaurants/**")
                 // Use StripPrefix if the downstream service expects the URL without the "/api" segment.
                 // .filters(f -> f.stripPrefix(1))
-                .uri("http://localhost:8081")
+                .uri("http://restaurant-discovery:8081")
             )
             .build();
     }

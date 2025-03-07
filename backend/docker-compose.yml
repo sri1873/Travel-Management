@@ -1,0 +1,70 @@
+services:
+  api-gateway:
+    build: ./apigateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - restaurant-discovery
+      - restaurant-reviews
+    environment:
+      DISCOVERY_SERVICE_URI: http://restaurant-discovery:8081
+      REVIEWS_SERVICE_URI: http://restaurant-reviews:8082
+
+  restaurant-discovery:
+    build: ./restaurantdiscovery
+    ports:
+      - "8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-discovery:3306/restaurantdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+
+  restaurant-reviews:
+    build: ./restaurantreviews
+    ports:
+      - "8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-reviews:3306/reviewdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+
+  mysql-discovery:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: restaurantdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./init-discovery.sql:/docker-entrypoint-initdb.d/init-discovery.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mysql-reviews:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: reviewdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./init-reviews.sql:/docker-entrypoint-initdb.d/init-reviews.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+networks:
+  default:
+    driver: bridge
