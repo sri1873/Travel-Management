@@ -16,6 +16,8 @@ import ChangePasswordForm from './components/Password/ChangePasswordForm';
 import TravelAdminDashboard from './components/Dashboard/TravelAdminDashboard';
 import './App.css';
 import FlightSearch from './components/Flights/FlightSearch';
+import FlightBooking from './components/Flights/FlightBooking';
+import FlightDetails from './components/Flights/FlightDetails';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -37,6 +39,8 @@ const App = () => {
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/flights" element={<FlightHome />} />
                 <Route path="/flights-search" element={<FlightSearch/>} />
+                <Route path="/flights-booking" element={<FlightBooking/>} />
+                <Route path="/flights-details" element={<FlightDetails/>} />
                 <Route path="/register" element={<RegistrationForm />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
