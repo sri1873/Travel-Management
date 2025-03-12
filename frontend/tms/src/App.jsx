@@ -23,7 +23,6 @@ import './App.css';
 import FlightSearch from './components/Flights/FlightSearch';
 import FlightBooking from './components/Flights/FlightBooking';
 import FlightDetails from './components/Flights/FlightDetails';
-import FlightHome from './components/Flights/FlightHome';
 
 const App = () => {
     const dispatch = useDispatch();
