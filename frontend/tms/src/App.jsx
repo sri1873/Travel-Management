@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useDispatch } from 'react-redux';
 import { Route, HashRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
@@ -20,6 +21,8 @@ import ChangePasswordForm from './components/UserManagement/ChangePasswordForm';
 import LoginForm from './components/UserManagement/LoginForm';
 import RegistrationForm from './components/UserManagement/RegistrationForm';
 import VerifyEmail from './components/UserManagement/VerifyEmail';
+import Itinerary from './components/itinerary/trip_packages';
+import BookingHistory from './components/itinerary/booking_history';
 const App = () => {
     const dispatch = useDispatch();
 
@@ -52,6 +55,9 @@ const App = () => {
                 <Route path="/hotels" element={<HotelDiscovery />} />
                 <Route path="/hotels/:id" element={<HotelDetails />} />
                 <Route path="/booking/:hotelId/:roomId" element={<HotelBooking />} />
+                <Route path="/itinerary" element={<Itinerary/>}/>
+                {/* <Route path="/activities" element={<BookingHistory/>}/> */}
+                <Route path="/bookinghistory" element={<BookingHistory/>}/>
             </Routes>
         </Router>
     );
