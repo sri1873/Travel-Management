@@ -1,23 +1,21 @@
-import React, { useEffect } from 'react';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from './store/userSlice';
-import RegistrationForm from './components/Registration/RegistrationForm';
-import Home from './components/Home';
-import FlightHome from './components/Flights/FlightHome';
-import Navbar from './components/Navbar';
-import LoginForm from './components/Login/LoginForm';
-import Onboarding from './components/Registration/Onboarding';
-import VerifyEmail from './components/VerifyEmail/VerifyEmail';
-import DashboardPage from './components/Dashboard/DashboardPage';
-import AdminDashboard from './components/Dashboard/AdminDashboard';
-import ProtectedRoute from './components/ProtectedRoute';
-import ChangePasswordForm from './components/Password/ChangePasswordForm';
-import TravelAdminDashboard from './components/Dashboard/TravelAdminDashboard';
+import { Route, HashRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import FlightSearch from './components/Flights/FlightSearch';
+import AdminDashboard from './components/Dashboard/AdminDashboard';
+import DashboardPage from './components/Dashboard/DashboardPage';
+import TravelAdminDashboard from './components/Dashboard/TravelAdminDashboard';
 import FlightBooking from './components/Flights/FlightBooking';
 import FlightDetails from './components/Flights/FlightDetails';
+import FlightHome from './components/Flights/FlightHome';
+import FlightSearch from './components/Flights/FlightSearch';
+import Home from './components/Home';
+import LoginForm from './components/Login/LoginForm';
+import Navbar from './components/Navbar';
+import ChangePasswordForm from './components/Password/ChangePasswordForm';
+import Onboarding from './components/Registration/Onboarding';
+import RegistrationForm from './components/Registration/RegistrationForm';
+import VerifyEmail from './components/VerifyEmail/VerifyEmail';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -38,9 +36,9 @@ const App = () => {
                 <Route path="/home" element={<Home />} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/flights" element={<FlightHome />} />
-                <Route path="/flights-search" element={<FlightSearch/>} />
-                <Route path="/flights-booking" element={<FlightBooking/>} />
-                <Route path="/flights-details" element={<FlightDetails/>} />
+                <Route path="/flights-search" element={<FlightSearch />} />
+                <Route path="/flights-booking" element={<FlightBooking />} />
+                <Route path="/flights-details" element={<FlightDetails />} />
                 <Route path="/register" element={<RegistrationForm />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
