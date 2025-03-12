@@ -7,19 +7,6 @@ import DashboardPage from './components/Dashboard/DashboardPage';
 import TravelAdminDashboard from './components/Dashboard/TravelAdminDashboard';
 import FlightBooking from './components/Flights/FlightBooking';
 import FlightDetails from './components/Flights/FlightDetails';
-import FlightHome from './components/Flights/FlightHome';
-import FlightSearch from './components/Flights/FlightSearch';
-import HotelBooking from './components/Hotels/HotelBooking/HotelBooking';
-import HotelDetails from './components/Hotels/HotelDetails/HotelDetails';
-import HotelDiscovery from './components/Hotels/HotelDiscovery/HotelDiscovery';
-import Navbar from './components/Navigation/Navbar';
-import Onboarding from './components/OnBoarding/Onboarding';
-import RestaurantDetail from './components/Restaurant/RestaurantDetail';
-import RestaurantList from './components/Restaurant/RestaurantList';
-import ChangePasswordForm from './components/UserManagement/ChangePasswordForm';
-import LoginForm from './components/UserManagement/LoginForm';
-import RegistrationForm from './components/UserManagement/RegistrationForm';
-import VerifyEmail from './components/UserManagement/VerifyEmail';
 
 const App = () => {
     const dispatch = useDispatch();
