@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import RegistrationForm from './components/Registration/RegistrationForm';
-import Home from './components/Home';  // Your home component or just a placeholder
+import Home from './components/Home'; 
+import Itinerary from './components/itinerary/trip_packages';
 
 const App = () => {
     return (
@@ -9,7 +10,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Home />} />  {/* Add this route */}
                 <Route path="/register" element={<RegistrationForm />} />
-                {/* Add more routes as needed */}
+                <Route path="/itinerary" element={<Itinerary/>}/>
             </Routes>
         </Router>
     );
