@@ -1,0 +1,80 @@
+.flight-home-container {
+    box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.511);
+    background-image: url("../../../assets/2380.jpg");
+    background-size: cover;
+    width: 98vw;
+    height: 88vh;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 2em;
+    margin: 1em;
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.flight-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2em;
+}
+
+.flight-hero-content {
+    padding: 1em;
+}
+
+.flight-hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: rgba(245, 245, 245, 0.877);
+}
+
+.flight-hero-content p {
+    font-size: 2rem;
+    opacity: 0.9;
+    color: rgba(245, 245, 245, 0.877);
+}
+
+
+.highlight-text {
+    color: #FFD700;
+    font-weight: bold;
+    cursor: default;
+}
+.flight-pics {
+    overflow: hidden;
+}
+@media screen and (max-width:900px) {
+    .flight-pics {
+        display: none;
+    }
+}
+
+.pic-1,
+.pic-2,
+.pic-3 {
+    margin: 1em;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    width: 25vw;
+    height: 40vh;
+}
+
+.pic-1 {
+    height: 20%;
+}
+
+.pic-1 {
+    background-image: url('../../../assets/airplane-wing.jpg');
+}
+
+.pic-2 {
+    background-image: url('../../../assets/airplane-window-with-blue-sky-wing.jpg');
+}
+
+.pic-3 {
+    background-image: url('../../../assets/2380.jpg');
+}

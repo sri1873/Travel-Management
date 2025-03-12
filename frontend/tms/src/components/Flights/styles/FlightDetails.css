@@ -1,0 +1,106 @@
+.flight-details-container {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 20px;
+    padding: 40px;
+    background-color: #f5f7fa;
+    min-height: 100vh;
+}
+
+/* Left Section (Scrollable Flight Details) */
+.left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Right Section (Sticky Billing) */
+.right-section {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Flight Section Styling */
+.flight-section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Flight Details Table */
+.flight-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.flight-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.flight-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Billing Table */
+.billing-table {
+    width: 100%;
+    font-size: 18px;
+}
+
+.billing-table td {
+    padding: 10px;
+}
+
+/* Baggage List */
+.baggage-list {
+    list-style: none;
+    padding: 0;
+}
+
+.baggage-list li {
+    padding: 5px 0;
+}
+
+/* Button */
+.button-container {
+    padding-top: 20px;
+}
+
+.book-btn {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.book-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Scrollbar */
+.left-section::-webkit-scrollbar {
+    width: 8px;
+}
+
+.left-section::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.left-section::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
