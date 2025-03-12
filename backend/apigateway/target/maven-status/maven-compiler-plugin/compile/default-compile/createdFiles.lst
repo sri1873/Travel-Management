@@ -1,0 +1,3 @@
+com\tms\apigateway\ApiGatewayApplication.class
+com\tms\apigateway\GatewayConfig.class
+com\tms\apigateway\SecurityConfig.class

@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: restaurant-discovery
+          uri: http://restaurant-discovery:8081
+          predicates:
+            - Path=/api/restaurants/**
+        - id: restaurant-reviews
+          uri: http://restaurant-reviews:8082   # URL of your reviews microservice
+          predicates:
+            - Path=/api/reviews/**
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
