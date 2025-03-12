@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import React from 'react';
 import { useDispatch } from 'react-redux';
+import { Route, HashRouter as Router, Routes } from 'react-router-dom';
+import Home from './components/Home';
 import { setCredentials } from './store/userSlice';
 import RegistrationForm from './components/UserManagement/RegistrationForm';
 import FlightHome from './components/Flights/FlightHome';
@@ -20,6 +21,9 @@ import HotelDetails from './components/Hotels/HotelDetails/HotelDetails';
 import HotelBooking from './components/Hotels/HotelBooking/HotelBooking';
 import './App.css';
 import FlightSearch from './components/Flights/FlightSearch';
+import FlightBooking from './components/Flights/FlightBooking';
+import FlightDetails from './components/Flights/FlightDetails';
+import FlightHome from './components/Flights/FlightHome';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -38,7 +42,9 @@ const App = () => {
                 {/* <Route path="/" element={<ProtectedRoute />} /> */}
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/flights" element={<FlightHome />} />
-                <Route path="/flights-search" element={<FlightSearch/>} />
+                <Route path="/flights-search" element={<FlightSearch />} />
+                <Route path="/flights-booking" element={<FlightBooking />} />
+                <Route path="/flights-details" element={<FlightDetails />} />
                 <Route path="/register" element={<RegistrationForm />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/dashboard" element={<DashboardPage />} />

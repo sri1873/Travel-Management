@@ -1,0 +1,11 @@
+.details-container {
+    text-align: center;
+    padding: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: blue;
+    color: white;
+    border: none;
+}
