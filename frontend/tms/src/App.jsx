@@ -20,7 +20,6 @@ import ChangePasswordForm from './components/UserManagement/ChangePasswordForm';
 import LoginForm from './components/UserManagement/LoginForm';
 import RegistrationForm from './components/UserManagement/RegistrationForm';
 import VerifyEmail from './components/UserManagement/VerifyEmail';
-
 const App = () => {
     const dispatch = useDispatch();
 

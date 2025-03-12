@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FlightForm from "./FlightForm";
 import "./styles/flightSearch.css";
+import { useNavigate } from "react-router-dom";
+import { setSelectedFlightDetails } from "../../store/selectedFlightSlice";
 
 const FlightSearch = () => {
+    const dispatch = useDispatch();
     const searchDetails = useSelector((state) => state.flight);
 
     const flightData = [
@@ -30,6 +33,13 @@ const FlightSearch = () => {
         e?.preventDefault();
         setFlights(flightData);
     };
+    const navigate = useNavigate();
+
+    const handleClick = (flight) => {
+        dispatch(setSelectedFlightDetails(flight));
+        navigate("/flights-details");
+    };
+
 
     return (
         <div className="container mt-4">
@@ -66,7 +76,7 @@ const FlightSearch = () => {
                     {filteredFlights.length > 0 ? (
                         filteredFlights.map((flight) => (
 
-                            <div className="flight-card card mb-3" key={flight.id}>
+                            <div className="flight-card card mb-3" key={flight.id} onClick={e=>handleClick(flight)}>
                                 <div className="flight-info card-body ">
                                     <h5 className="card-title">{flight.airline}</h5>
                                     <div className="time">
