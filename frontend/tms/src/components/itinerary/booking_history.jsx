@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import './booking_history.css';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import "./booking_history.css";
+import { loadBookings } from "../../store/itineraryBookingSlice";
 
 const BookingHistory = () => {
-    const [bookings, setBookings] = useState([]);
+    const dispatch = useDispatch();
+    const { bookings } = useSelector((state) => state.bookingHistory);
 
     useEffect(() => {
-        const storedBookings = JSON.parse(localStorage.getItem("bookings")) || [];
-        setBookings(storedBookings);
-    }, []);
+        dispatch(loadBookings());
+    }, [dispatch]);
 
     return (
         <div className="landing">
@@ -16,19 +17,13 @@ const BookingHistory = () => {
                 <h1>Booking History</h1>
             </div>
 
-            <div className="itinerary_navbar">
-                <p><Link to="/itinerary">Trip Packages</Link></p>
-                <p><Link to="/activities">Plan Activities</Link></p>
-                <p><Link to="/bookinghistory">Booking History</Link></p>
-            </div>
-
             <div className="bookings_container">
                 {bookings.length === 0 ? (
                     <p>No bookings yet. Explore and book your next adventure!</p>
                 ) : (
                     <div className="booking_grid">
-                        {bookings.map((booking, index) => (
-                            <div className="booking_card" key={index}>
+                        {bookings.map((booking) => (
+                            <div className="booking_card" key={booking.id}>
                                 <img src={booking.image} alt={booking.title} />
                                 <h2>{booking.title}</h2>
                                 <p>{booking.description}</p>

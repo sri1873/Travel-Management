@@ -1,35 +1,18 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import dingle1 from "../../assets/itinerary_assets/dingle1.png";
-import kerry from "../../assets/itinerary_assets/kerry.png";
-import './trip_packages.css';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import "./trip_packages.css";
+import { loadTripPackages, addBooking } from "../../store/itineraryBookingSlice";
 
-const Itinerary = () => {
+const TripPackages = () => {
+    const dispatch = useDispatch();
+    const { tripPackages } = useSelector((state) => state.bookingHistory);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedPackage, setSelectedPackage] = useState(null);
-    const [bookingDetails, setBookingDetails] = useState([]);
     const [date, setDate] = useState("");
 
-    const packages = [
-        {
-            id: 1,
-            title: "Dingle Peninsula Tour",
-            image: dingle1,
-            description: "Visit the beautiful Dingle Peninsula",
-            price: "100 EUR",
-            essentials: "Comfortable shoes, Camera",
-            reviews: ["Breathtaking views!", "A must-see adventure!"]
-        },
-        {
-            id: 2,
-            title: "Ring of Kerry Tour",
-            image: kerry,
-            description: "The fierce ring of Kerry awaits you!",
-            price: "90 EUR",
-            essentials: "Raincoat, Snacks",
-            reviews: ["Spectacular scenery!", "Amazing cultural experience!"]
-        }
-    ];
+    useEffect(() => {
+        dispatch(loadTripPackages());
+    }, [dispatch]);
 
     const openPopup = (pkg) => {
         setSelectedPackage(pkg);
@@ -39,8 +22,7 @@ const Itinerary = () => {
     const handleConfirm = () => {
         if (date) {
             const newBooking = { ...selectedPackage, date };
-            setBookingDetails([...bookingDetails, newBooking]);
-            localStorage.setItem("bookings", JSON.stringify([...bookingDetails, newBooking]));
+            dispatch(addBooking(newBooking));
             alert(`Ticket booked for ${selectedPackage.title} on ${date}`);
             setShowPopup(false);
         } else {
@@ -54,21 +36,15 @@ const Itinerary = () => {
                 <h1>Your Itinerary</h1>
             </div>
 
-            <div className="itinerary_navbar">
-                <p><Link to="/itinerary">Trip Packages</Link></p>
-                <p><Link to="/itinerary">Plan Activities</Link></p>
-                <p><Link to="/bookinghistory">Booking History</Link></p>
-            </div>
-
             <div className="itinerary_packages_container">
                 <div className="search_bar">
-                    <input type="text" placeholder="Search"/>
+                    <input type="text" placeholder="Search" />
                     <button className="search_btn">Search</button>
                     <button className="filter_btn">Filters</button>
                 </div>
-                
+
                 <div className="packages_grid">
-                    {packages.map((pkg) => (
+                    {tripPackages.map((pkg) => (
                         <div className="package_card" key={pkg.id}>
                             <img src={pkg.image} alt={pkg.title} />
                             <h2>{pkg.title}</h2>
@@ -92,16 +68,10 @@ const Itinerary = () => {
                         <p>{selectedPackage.description}</p>
                         <p><strong>Essentials:</strong> {selectedPackage.essentials}</p>
 
-                        <label>Date & Time: 
+                        <label>
+                            Date & Time:
                             <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
                         </label>
-
-                        <h3>Reviews:</h3>
-                        <ul>
-                            {selectedPackage.reviews.map((review, index) => (
-                                <li key={index}>{review}</li>
-                            ))}
-                        </ul>
 
                         <button className="confirm_btn" onClick={handleConfirm}>Confirm Booking</button>
                         <button className="close_btn" onClick={() => setShowPopup(false)}>Close</button>
@@ -112,4 +82,4 @@ const Itinerary = () => {
     );
 };
 
-export default Itinerary;
+export default TripPackages;
