@@ -1,47 +1,87 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setHotel,
+  setReviews,
+  setLoading,
+  setError,
+  setReviewText,
+  setRating,
+  addReview,
+  clearReviewForm,
+} from '../../../store/hotelDetailsSlice';
 import './HotelDetails.css';
 
 const HotelDetails = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const [hotel, setHotel] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const [reviewText, setReviewText] = useState('');
-  const [rating, setRating] = useState(1);
 
+  const { hotel, reviews, loading, error, reviewText, rating } = useSelector(
+    (state) => state.hotelDetails
+  );
+
+  // Fetch hotel details and reviews
   useEffect(() => {
-    // Fetch hotel details from the backend
-    fetch(`http://localhost:8080/api/hotels/${id}`)
-      .then((response) => response.json())
-      .then((data) => setHotel(data))
-      .catch((error) => console.error('Error fetching hotel details:', error));
-
-    // Fetch reviews for the hotel
-    fetch(`http://localhost:8080/api/hotels/${id}/reviews`)
-      .then((response) => response.json())
-      .then((data) => setReviews(data))
-      .catch((error) => console.error('Error fetching reviews:', error));
+    fetchHotelDetails();
+    fetchReviews();
   }, [id]);
 
-  // Add a review for the hotel
+  const fetchHotelDetails = () => {
+    dispatch(setLoading(true));
+    fetch(`http://localhost:8080/api/hotels/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch(setHotel(data));
+        dispatch(setLoading(false));
+      })
+      .catch((error) => {
+        dispatch(setError('Error fetching hotel details'));
+        dispatch(setLoading(false));
+      });
+  };
+
+  const fetchReviews = () => {
+    fetch(`http://localhost:8080/api/hotels/${id}/reviews`)
+      .then((response) => response.json())
+      .then((data) => dispatch(setReviews(data)))
+      .catch((error) => dispatch(setError('Error fetching reviews')));
+  };
+
   const handleSubmitReview = (e) => {
     e.preventDefault();
+    const newReview = { reviewText, rating };
     fetch(`http://localhost:8080/api/hotels/${id}/reviews`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ reviewText, rating }),
+      body: JSON.stringify(newReview),
     })
       .then((response) => response.json())
       .then((data) => {
-        setReviews([...reviews, data]);
-        setReviewText('');
-        setRating(1);
+        dispatch(addReview(data));
+        dispatch(clearReviewForm()); 
       })
-      .catch((error) => console.error('Error submitting review:', error));
+      .catch((error) => dispatch(setError('Error submitting review')));
   };
 
-  if (!hotel) {
+  const handleReviewTextChange = (e) => {
+    dispatch(setReviewText(e.target.value));
+  };
+
+  const handleRatingChange = (e) => {
+    dispatch(setRating(e.target.value));
+  };
+
+  if (loading) {
     return <p>Loading hotel details...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (!hotel) {
+    return <p>No hotel found.</p>;
   }
 
   return (
@@ -83,7 +123,7 @@ const HotelDetails = () => {
         <form onSubmit={handleSubmitReview}>
           <textarea
             value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}
+            onChange={handleReviewTextChange}
             placeholder="Write your review"
             required
           ></textarea>
@@ -91,7 +131,7 @@ const HotelDetails = () => {
             <label>Rating:</label>
             <select
               value={rating}
-              onChange={(e) => setRating(e.target.value)}
+              onChange={handleRatingChange}
               required
             >
               <option value="1">1 Star</option>

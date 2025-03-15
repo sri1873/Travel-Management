@@ -1,33 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRoom, setBookingDetails, setLoading, setError, setBookingStatus } from '../../../store/hotelBookingSlice';
 import './HotelBooking.css';
 
 const HotelBooking = () => {
   const { hotelId, roomId } = useParams();
   const navigate = useNavigate();
-  const [room, setRoom] = useState(null);
-  const [bookingDetails, setBookingDetails] = useState({
-    checkInDate: '',
-    checkOutDate: '',
-    numberOfGuests: 1,
-  });
+  const dispatch = useDispatch();
+
+  const { room, bookingDetails, loading, error, bookingStatus } = useSelector(
+    (state) => state.hotelBooking
+  );
 
   useEffect(() => {
     // Fetch room details using roomId from backend
+    dispatch(setLoading(true));
     fetch(`http://localhost:8080/api/rooms/${roomId}`)
       .then((response) => response.json())
-      .then((data) => setRoom(data))
-      .catch((error) => console.error('Error fetching room details:', error));
-  }, [roomId]);
+      .then((data) => {
+        dispatch(setRoom(data));
+        dispatch(setLoading(false));
+      })
+      .catch((error) => {
+        dispatch(setError('Error fetching room details'));
+        dispatch(setLoading(false));
+      });
+  }, [roomId, dispatch]);
 
   const handleBooking = () => {
-    // Prepare booking data
     const bookingData = {
       checkInDate: bookingDetails.checkInDate,
       checkOutDate: bookingDetails.checkOutDate,
       numberOfGuests: bookingDetails.numberOfGuests,
       roomId: parseInt(roomId, 10),
-      hotelId: parseInt(hotelId, 10)
+      hotelId: parseInt(hotelId, 10),
     };
 
     // Send booking data to backend
@@ -40,23 +47,39 @@ const HotelBooking = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        dispatch(setBookingStatus('Booking successful!'));
         alert('Booking successful!');
         navigate('/hotels');
       })
       .catch((error) => {
-        console.error('Error booking room:', error);
+        dispatch(setBookingStatus('Error booking room. Please try again later.'));
         alert('Error booking room. Please try again later.');
       });
   };
 
-  if (!room) {
+  const handleBookingDetailChange = (e) => {
+    dispatch(setBookingDetails({
+      ...bookingDetails,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  if (loading) {
     return <p>Loading room details...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (!room) {
+    return <p>No room found.</p>;
   }
 
   return (
     <div className="hotel-booking-container">
       <div className="hotel-booking">
-        <h2>Booking for {room.type} </h2>
+        <h2>Booking for {room.type}</h2>
         <p><strong>Price:</strong> ${room.price} per night</p>
         <p>Pay on arrival</p>
 
@@ -64,27 +87,33 @@ const HotelBooking = () => {
           <label>Check-in Date:</label>
           <input
             type="date"
+            name="checkInDate"
             value={bookingDetails.checkInDate}
-            onChange={(e) => setBookingDetails({ ...bookingDetails, checkInDate: e.target.value })}
+            onChange={handleBookingDetailChange}
           />
 
           <label>Check-out Date:</label>
           <input
             type="date"
+            name="checkOutDate"
             value={bookingDetails.checkOutDate}
-            onChange={(e) => setBookingDetails({ ...bookingDetails, checkOutDate: e.target.value })}
+            onChange={handleBookingDetailChange}
           />
 
           <label>Number of Guests:</label>
           <input
             type="number"
+            name="numberOfGuests"
             min="1"
             value={bookingDetails.numberOfGuests}
-            onChange={(e) => setBookingDetails({ ...bookingDetails, numberOfGuests: e.target.value })}
+            onChange={handleBookingDetailChange}
           />
 
           <button onClick={handleBooking}>Confirm Booking</button>
         </div>
+
+        {/* Display booking status if exists */}
+        {bookingStatus && <p>{bookingStatus}</p>}
       </div>
     </div>
   );
