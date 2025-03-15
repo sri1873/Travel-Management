@@ -22,13 +22,13 @@ const BookingHistory = () => {
                 <p><Link to="/bookinghistory">Booking History</Link></p>
             </div>
 
-            <div className="itinerary_packages_container">
+            <div className="bookings_container">
                 {bookings.length === 0 ? (
                     <p>No bookings yet. Explore and book your next adventure!</p>
                 ) : (
-                    <div className="packages_grid">
+                    <div className="booking_grid">
                         {bookings.map((booking, index) => (
-                            <div className="package_card" key={index}>
+                            <div className="booking_card" key={index}>
                                 <img src={booking.image} alt={booking.title} />
                                 <h2>{booking.title}</h2>
                                 <p>{booking.description}</p>
