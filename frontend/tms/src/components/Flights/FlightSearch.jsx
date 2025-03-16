@@ -1,28 +1,30 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import FlightForm from "./FlightForm";
-import "./styles/flightSearch.css";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSelectedFlightDetails } from "../../store/selectedFlightSlice";
+import FlightForm from "./FlightForm";
+import "./styles/flightSearch.css";
 
+const flightData = [
+    { id: 1, airline: "AirX", price: 250, duration: "3h 45m", departure: "10:30 AM", arrival: "2:15 PM", layover: 1, layoverDuration: "1h 30m" },
+    { id: 2, airline: "SkyWings", price: 300, duration: "4h 15m", departure: "12:00 PM", arrival: "4:15 PM", layover: 0, layoverDuration: "0" },
+    { id: 3, airline: "FlyHigh", price: 280, duration: "3h 50m", departure: "2:30 PM", arrival: "6:20 PM", layover: 1, layoverDuration: "2h 20m" },
+];
 const FlightSearch = () => {
     const dispatch = useDispatch();
-    const searchDetails = useSelector((state) => state.flight);
-
-    const flightData = [
-        { id: 1, airline: "AirX", price: 250, duration: "3h 45m", departure: "10:30 AM", arrival: "2:15 PM", layover: 1, layoverDuration: "1h 30m" },
-        { id: 2, airline: "SkyWings", price: 300, duration: "4h 15m", departure: "12:00 PM", arrival: "4:15 PM", layover: 0, layoverDuration: "0" },
-        { id: 3, airline: "FlyHigh", price: 280, duration: "3h 50m", departure: "2:30 PM", arrival: "6:20 PM", layover: 1, layoverDuration: "2h 20m" },
-    ];
-
     const [flights, setFlights] = useState(flightData);
     const [filters, setFilters] = useState({
         maxPrice: 500,
         layover: "any",
         airline: "all",
     });
+    
+    useEffect(() => {
+        axios.get('http://localhost:8081/flights/search',filters).then(res=>setFlights(flightData))
+    },[filters])
 
-    // Filtering flights based on user selection
+
     const filteredFlights = flights.filter(flight =>
         flight.price <= filters.maxPrice &&
         (filters.layover === "any" || (filters.layover === "direct" && flight.layover === 0) || (filters.layover === "1+" && flight.layover > 0)) &&

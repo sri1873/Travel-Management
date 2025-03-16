@@ -23,8 +23,8 @@ const FlightForm = ({ handleNavigate }) => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        console.log(search)
-        dispatch(setFlightDetails(search)); // Save search details to Redux
+        
+        dispatch(setFlightDetails(search)); 
         handleNavigate();
     };
 

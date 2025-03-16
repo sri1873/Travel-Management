@@ -1,12 +1,10 @@
 import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FlightForm from './FlightForm';
 import "./styles/flightHome.css";
 
 const FlightHome = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleNavigate = () => {
