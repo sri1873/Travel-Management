@@ -11,6 +11,6 @@ import java.util.List;
 public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     // Search for flights based on from, to, and departure date
-    List<Flight> findByFromLocationAndToLocationAndDepartureTimeBetween(
-            String fromLocation, String toLocation, LocalDate startOfDay, LocalDate endOfDay);
+    List<Flight> findByFromLocationAndToLocationAndDepartureTime(
+            String fromLocation, String toLocation, LocalDate startOfDay);
 }

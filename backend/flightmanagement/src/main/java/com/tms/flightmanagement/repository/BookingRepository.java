@@ -1,4 +1,4 @@
-package com.example.flightservice.repository;
+package com.tms.flightmanagement.repository;
 
 import com.tms.flightmanagement.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -36,7 +36,7 @@ public class Flight {
     @Column(nullable = false)
     private String duration;
 
-    private int layovers;
+    private int layover;
     private String layoverDuration;
 
     @Column(nullable = false)

@@ -31,5 +31,8 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
+
+    public Booking(Booking booking) {
+    }
 }
 

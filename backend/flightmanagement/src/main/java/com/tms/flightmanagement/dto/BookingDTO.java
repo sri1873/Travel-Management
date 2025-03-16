@@ -1,5 +1,6 @@
 package com.tms.flightmanagement.dto;
 
+import com.tms.flightmanagement.model.Booking;
 import lombok.*;
 
 @Getter
@@ -14,4 +15,9 @@ public class BookingDTO {
     private int numberOfPassengers;
     private double totalPrice;
     private String status;  // PENDING, CONFIRMED, CANCELLED
+
+    public BookingDTO(Booking booking) {
+
+
+    }
 }
