@@ -146,3 +146,30 @@
 .book_btn:hover {
     background: #FFC107;
 }
+.popup_overlay {
+    position:relative;
+    top: 10vh;
+    left: 0;
+    /* margin: 10vh 10vw; */
+    width: 70%;
+    height: auto;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup_content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    height: 70%;
+    max-width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+.popup_content img{
+    height: 40vh;
+}

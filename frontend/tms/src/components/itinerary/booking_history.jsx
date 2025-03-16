@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import './booking_history.css';
+import "./booking_history.css";
+
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setBookingHistory } from "../../store/itineraryBookingSlice";
 
 const BookingHistory = () => {
-    const [bookings, setBookings] = useState([]);
-
+    const dispatch = useDispatch();
+    const bookingHistory = useSelector((state) => state.bookings);
+    const [bookingState, setBookings] = useState([]);
     useEffect(() => {
-        const storedBookings = JSON.parse(localStorage.getItem("bookings")) || [];
-        setBookings(storedBookings);
+        if (bookingHistory.bookings.length === 0) {
+            axios.get("http://localhost:8081/api/bookings")
+                .then((response) => {
+                    dispatch(setBookingHistory(response.data));
+                    setBookings(response.data);
+                })
+                .catch((error) => console.error("Error fetching trip packages:", error));
+        } else {
+            setBookings(bookingHistory.bookings);
+        }
     }, []);
 
     return (
@@ -16,20 +28,14 @@ const BookingHistory = () => {
                 <h1>Booking History</h1>
             </div>
 
-            <div className="itinerary_navbar">
-                <p><Link to="/itinerary">Trip Packages</Link></p>
-                <p><Link to="/activities">Plan Activities</Link></p>
-                <p><Link to="/bookinghistory">Booking History</Link></p>
-            </div>
-
-            <div className="itinerary_packages_container">
-                {bookings.length === 0 ? (
+            <div className="bookings_container">
+                {bookingState.length === 0 ? (
                     <p>No bookings yet. Explore and book your next adventure!</p>
                 ) : (
-                    <div className="packages_grid">
-                        {bookings.map((booking, index) => (
-                            <div className="package_card" key={index}>
-                                <img src={booking.image} alt={booking.title} />
+                    <div className="booking_grid">
+                        {bookingState.map((booking) => (
+                            <div className="booking_card" key={booking.id}>
+                                <img src={`src/assets/itinerary_assets/${booking.image}`} alt={booking.title} />
                                 <h2>{booking.title}</h2>
                                 <p>{booking.description}</p>
                                 <p><strong>Date:</strong> {booking.date}</p>

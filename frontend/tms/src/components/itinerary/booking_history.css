@@ -31,17 +31,17 @@
     color: #005fa3;
 }
 
-.itinerary_packages_container {
+.bookings_container {
     margin-top: 2rem;
 }
 
-.packages_grid {
+.bookings_grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 }
 
-.package_card {
+.booking_card {
     background: #fff;
     border-radius: 16px;
     overflow: hidden;
@@ -49,28 +49,28 @@
     transition: transform 0.3s ease;
 }
 
-.package_card:hover {
+.booking_card:hover {
     transform: translateY(-5px);
 }
 
-.package_card img {
+.booking_card img {
     width: 100%;
     height: 20vh;
     object-fit: cover;
 }
 
-.package_card h2 {
+.booking_card h2 {
     font-size: 1.5rem;
     margin: 1rem;
     color: #333;
 }
 
-.package_card p {
+.booking_card p {
     margin: 0.5rem 1rem;
     color: #555;
 }
 
-.itinerary_packages_container p {
+.bookings_container p {
     text-align: center;
     color: #777;
     font-size: 1.2rem;
