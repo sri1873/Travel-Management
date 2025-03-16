@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "./booking_history.css";
-
 import axios from "axios";
+import "./booking_history.css";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setBookingHistory } from "../../store/itineraryBookingSlice";
 
@@ -26,6 +26,10 @@ const BookingHistory = () => {
         <div className="landing">
             <div className="itinerary_title">
                 <h1>Booking History</h1>
+                <div className="itinerary_navbar">
+                    <Link to="/itinerary" ><p>Trip Packages</p></Link>
+                    <Link to="/bookinghistory" ><p>Booking History</p></Link>
+                </div>
             </div>
 
             <div className="bookings_container">

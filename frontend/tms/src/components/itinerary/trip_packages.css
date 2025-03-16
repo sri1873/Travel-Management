@@ -1,15 +1,23 @@
 .landing {
     background: #FAF3E0;
-    padding: 4vh 8vw;
+    padding: 5vh 8vw;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+}
+.itinerary_title{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .itinerary_title h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 700;
     text-align: center;
     color: #3E2723;
     margin-bottom: 4vh;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .itinerary_navbar {
@@ -19,15 +27,19 @@
     margin-bottom: 5vh;
 }
 
-.itinerary_navbar p a {
+.itinerary_navbar p {
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: #5D4037;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
+    margin: 0;
+    padding: 0.5vh 1vw;
+    border-radius: 12px;
 }
 
-.itinerary_navbar p a:hover {
+.itinerary_navbar p:hover {
     color: #FF7043;
+    transform: scale(1.05);
 }
 
 .itinerary_packages_container {
@@ -43,6 +55,9 @@
     align-items: center;
     gap: 1vw;
     margin-bottom: 4vh;
+    background: #FFEB3B;
+    padding: 1.5vh 2vw;
+    border-radius: 16px;
 }
 
 .search_bar input {
@@ -67,7 +82,7 @@
     border-radius: 24px;
     cursor: pointer;
     font-weight: bold;
-    transition: #FFD54F 0.3s ease;
+    transition: 0.3s ease;
 }
 
 .search_btn {
@@ -90,8 +105,9 @@
 
 .packages_grid {
     display: grid;
-    grid-template-columns: 40vw 40vw;
-    gap: 4vh;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3vh;
+    margin-top: 3vh;
 }
 
 .package_card {
@@ -128,8 +144,10 @@
 }
 
 .desc_book p {
-    font-size: 1rem;
-    color: #5D4037;
+    font-size: 1.5rem;
+    font-weight:bold;
+    color: black;
+    margin: 0;
 }
 
 .book_btn {
@@ -140,36 +158,134 @@
     border-radius: 16px;
     font-weight: bold;
     cursor: pointer;
-    transition: #FFD54F 0.3s ease;
+    transition: background 0.3s ease;
+    width: 50%;
 }
 
 .book_btn:hover {
     background: #FFC107;
 }
+
 .popup_overlay {
-    position:relative;
-    top: 10vh;
+    position: fixed;
+    top: 0;
     left: 0;
-    /* margin: 10vh 10vw; */
-    width: 70%;
-    height: auto;
-    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Darken the background */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    animation: fadeIn 0.3s ease;
 }
 
 .popup_content {
+    display: flex;
     background: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 12px;
     width: 80%;
-    height: 70%;
-    max-width: 90%;
+    max-width: 80vw; 
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
 }
-.popup_content img{
-    height: 40vh;
+
+.popup_content img {
+    max-height: 30vh;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.popup_content h2 {
+    font-size: 2rem;
+    color: #4E342E;
+    margin-bottom: 15px;
+}
+
+.popup_content p {
+    font-size: 1.1rem;
+    color: #5D4037;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.popup_content label {
+    font-size: 1.1rem;
+    color: #5D4037;
+    margin-right: 10px;
+}
+
+.popup_content input {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #795548;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    width: 80%; /* Make input field responsive */
+    margin-left: 10px;
+}
+
+.popup_content button {
+    padding: 12px 30px;
+    border: none;
+    background: #FF7043;
+    color: white;
+    font-weight: bold;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-right: 15px; 
+}
+
+.popup_content button:hover {
+    background: #E64A19;
+}
+
+.popup_content .close_btn {
+    position: absolute;
+    top: 10px;
+    left: 35vw;
+    background: transparent;
+    color: #FF7043;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(-30px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .popup_content {
+        width: 90%;
+        max-width: 100%;
+    }
+
+    .popup_content img {
+        height: auto;
+        max-width: 100%;
+    }
+
+    .popup_content button {
+        padding: 10px 20px;
+    }
 }
