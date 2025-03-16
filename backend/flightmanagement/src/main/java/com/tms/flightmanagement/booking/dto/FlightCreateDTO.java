@@ -1,6 +1,5 @@
-package com.tms.flightmanagement.dto;
+package com.tms.flightmanagement.booking.dto;
 
-import com.tms.flightmanagement.model.Flight;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,21 +9,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FlightDTO {
-    private Long id;
+public class FlightCreateDTO {
     private String airline;
     private String fromLocation;
     private String toLocation;
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
     private String duration;
-    private int layover;
+    private int layovers;
     private String layoverDuration;
     private double price;
-    private String flightClass;  // Economy, Business, etc.
+    private String flightClass;
     private int availableSeats;
-
-    public FlightDTO(Flight flight) {
-
-    }
 }

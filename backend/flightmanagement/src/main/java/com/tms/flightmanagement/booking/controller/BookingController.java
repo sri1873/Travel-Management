@@ -1,8 +1,8 @@
-package com.tms.flightmanagement.controller;
+package com.tms.flightmanagement.booking.controller;
 
-import com.tms.flightmanagement.dto.BookingDTO;
-import com.tms.flightmanagement.model.Booking;
-import com.tms.flightmanagement.service.BookingService;
+import com.tms.flightmanagement.booking.dto.BookingDTO;
+import com.tms.flightmanagement.booking.model.Booking;
+import com.tms.flightmanagement.booking.service.BookingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

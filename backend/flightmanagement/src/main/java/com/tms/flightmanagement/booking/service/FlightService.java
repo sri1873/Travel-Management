@@ -1,8 +1,8 @@
-package com.tms.flightmanagement.service;
+package com.tms.flightmanagement.booking.service;
 
-import com.tms.flightmanagement.dto.FlightDTO;
-import com.tms.flightmanagement.model.Flight;
-import com.tms.flightmanagement.repository.FlightRepository;
+import com.tms.flightmanagement.booking.dto.FlightDTO;
+import com.tms.flightmanagement.booking.model.Flight;
+import com.tms.flightmanagement.booking.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

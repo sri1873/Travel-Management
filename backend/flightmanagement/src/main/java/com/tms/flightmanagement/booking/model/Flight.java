@@ -1,4 +1,4 @@
-package com.tms.flightmanagement.model;
+package com.tms.flightmanagement.booking.model;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.tms.flightmanagement.dto;
+package com.tms.flightmanagement.booking.dto;
 
 import lombok.*;
 

@@ -1,6 +1,6 @@
-package com.tms.flightmanagement.repository;
+package com.tms.flightmanagement.booking.repository;
 
-import com.tms.flightmanagement.model.Booking;
+import com.tms.flightmanagement.booking.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

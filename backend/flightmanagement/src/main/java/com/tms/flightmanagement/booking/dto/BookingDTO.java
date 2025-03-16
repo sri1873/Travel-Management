@@ -1,6 +1,6 @@
-package com.tms.flightmanagement.dto;
+package com.tms.flightmanagement.booking.dto;
 
-import com.tms.flightmanagement.model.Booking;
+import com.tms.flightmanagement.booking.model.Booking;
 import lombok.*;
 
 @Getter
