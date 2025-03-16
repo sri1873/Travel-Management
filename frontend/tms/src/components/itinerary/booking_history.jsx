@@ -1,15 +1,26 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import "./booking_history.css";
-import { loadBookings } from "../../store/itineraryBookingSlice";
+
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setBookingHistory } from "../../store/itineraryBookingSlice";
 
 const BookingHistory = () => {
     const dispatch = useDispatch();
-    const { bookings } = useSelector((state) => state.bookingHistory);
-
+    const bookingHistory = useSelector((state) => state.bookings);
+    const [bookingState, setBookings] = useState([]);
     useEffect(() => {
-        dispatch(loadBookings());
-    }, [dispatch]);
+        if (bookingHistory.bookings.length === 0) {
+            axios.get("http://localhost:8081/api/bookings")
+                .then((response) => {
+                    dispatch(setBookingHistory(response.data));
+                    setBookings(response.data);
+                })
+                .catch((error) => console.error("Error fetching trip packages:", error));
+        } else {
+            setBookings(bookingHistory.bookings);
+        }
+    }, []);
 
     return (
         <div className="landing">
@@ -18,13 +29,13 @@ const BookingHistory = () => {
             </div>
 
             <div className="bookings_container">
-                {bookings.length === 0 ? (
+                {bookingState.length === 0 ? (
                     <p>No bookings yet. Explore and book your next adventure!</p>
                 ) : (
                     <div className="booking_grid">
-                        {bookings.map((booking) => (
+                        {bookingState.map((booking) => (
                             <div className="booking_card" key={booking.id}>
-                                <img src={booking.image} alt={booking.title} />
+                                <img src={`src/assets/itinerary_assets/${booking.image}`} alt={booking.title} />
                                 <h2>{booking.title}</h2>
                                 <p>{booking.description}</p>
                                 <p><strong>Date:</strong> {booking.date}</p>

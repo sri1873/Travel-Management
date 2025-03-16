@@ -9,6 +9,6 @@ export const store = configureStore({
     user: userReducer,
     flight: flightReducer,
     selectedFlight: selectedFlightReducer,
-    bookingHistory: bookingReducer
+    bookings: bookingReducer
   },
 });
