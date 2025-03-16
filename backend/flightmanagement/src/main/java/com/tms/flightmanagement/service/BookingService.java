@@ -5,7 +5,9 @@ import com.tms.flightmanagement.dto.BookingDTO;
 import com.tms.flightmanagement.model.Booking;
 import com.tms.flightmanagement.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +32,14 @@ public class BookingService {
 
 
     public List<Booking> getUserBookings(String userId) {
-        List<Booking> bookings = bookingRepository.findByUserId(userId);
-        return bookings.stream().map(Booking::new).collect(Collectors.toList());
+        try {
+            List<Booking> bookings = bookingRepository.findByUserId(userId);
+            return bookings.stream().map(Booking::new).collect(Collectors.toList());
+        } catch (Exception ex) {
+
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to fetch flight data", ex);
+        }
+
     }
 
 

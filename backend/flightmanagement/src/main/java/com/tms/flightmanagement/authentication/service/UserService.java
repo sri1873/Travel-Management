@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
 
-    private List<UserDetails> users = List.of(
+    private final List<UserDetails> users = List.of(
             User.withDefaultPasswordEncoder().username("admin").password("password").roles("USER").build()
     );
 

@@ -4,11 +4,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
 @Component
 public class JWTConfig {
-    private String secretKey = "yourSecretKey";  // Change this in production!
+    private final String secretKey = "yourSecretKey";  // Change this in production!
 
     public String generateToken(String username) {
         return Jwts.builder()
