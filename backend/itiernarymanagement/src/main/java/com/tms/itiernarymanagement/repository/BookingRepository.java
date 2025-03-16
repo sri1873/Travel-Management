@@ -1,9 +1,0 @@
-package com.tms.itiernarymanagement.repository;
-
-import com.tms.itiernarymanagement.model.Booking;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface BookingRepository extends JpaRepository<Booking, Long> {
-}

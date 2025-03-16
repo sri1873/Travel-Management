@@ -1,7 +1,7 @@
-package com.tms.itiernarymanagement.controller;
+package com.tms.itinerarymanagement.controller;
 
-import com.tms.itiernarymanagement.model.TripPackage;
-import com.tms.itiernarymanagement.service.TripPackageService;
+import com.tms.itinerarymanagement.model.TripPackage;
+import com.tms.itinerarymanagement.service.TripPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,10 @@ public class TripPackageController {
     public List<TripPackage> getAllTripPackages() {
         return tripPackageService.getAllTripPackages();
     }
-
+    @PostMapping("/add")
+    public TripPackage addTripPackage(@RequestBody TripPackage tripPackage) {
+        return tripPackageService.saveTripPackage(tripPackage);
+    }
     @GetMapping("/{id}")
     public TripPackage getTripPackageById(@PathVariable Long id) {
         return tripPackageService.getTripPackageById(id);

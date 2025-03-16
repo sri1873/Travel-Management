@@ -1,20 +1,22 @@
-package com.tms.itiernarymanagement.model;
+package com.tms.itinerarymanagement.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+import lombok.*;
 @Entity
+@Table(name = "trip_packages")
+@Data
 public class TripPackage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String name;
+    private String location;
     private String description;
-    private String price;
     private String image;
+    private String price;
     private String essentials;
+    private String reviews;
+
 }
