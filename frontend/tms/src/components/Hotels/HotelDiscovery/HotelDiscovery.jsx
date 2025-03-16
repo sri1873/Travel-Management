@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { setHotels, setLoading, setError, setLocation } from '../../../store/hotelSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import './HotelDiscovery.css';
 
 const HotelDiscovery = () => {
-  const [location, setLocation] = useState('');
-  const [hotels, setHotels] = useState([]);
+  const dispatch = useDispatch();
+  const { hotels, loading, error, location } = useSelector((state) => state.hotels);
 
-  // Fetch all hotels 
   useEffect(() => {
     fetchHotels();
   }, []);
@@ -14,40 +15,54 @@ const HotelDiscovery = () => {
   const fetchHotels = (location = '') => {
     const url = location
       ? `http://localhost:8080/api/hotels/search?location=${location}`
-      : `http://localhost:8080/api/hotels/getAll`; // Get all hotels when no location is specified
+      : `http://localhost:8080/api/hotels/getAll`;
+
+    dispatch(setLoading(true));
 
     fetch(url)
       .then((response) => response.json())
-      .then((data) => setHotels(data))
-      .catch((error) => console.error('Error fetching hotels:', error));
+      .then((data) => {
+        dispatch(setHotels(data)); 
+        dispatch(setLoading(false)); 
+      })
+      .catch((error) => {
+        dispatch(setError('Error fetching hotels'));
+        dispatch(setLoading(false));
+      });
   };
 
   const handleSearch = () => {
     if (!location) {
-      fetchHotels();
+      fetchHotels(); 
     } else {
-      fetchHotels(location);
+      fetchHotels(location); 
     }
+  };
+
+  const handleLocationChange = (e) => {
+    dispatch(setLocation(e.target.value)); 
   };
 
   return (
     <div className="hotel-discovery">
-
       <h1>Explore Your Next Getaway</h1>
-      <p class="slogan">Find Your Perfect Stay, Anywhere!</p>
+      <p className="slogan">Find Your Perfect Stay, Anywhere!</p>
 
       <div className="search-bar">
         <input
           type="text"
           placeholder="Search by location..."
           value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={handleLocationChange} 
         />
         <button onClick={handleSearch}>Search</button>
       </div>
 
       <div className="hotel-list">
-        {hotels.length === 0 ? (
+        {loading && <p>Loading...</p>} 
+        {error && <p>{error}</p>}
+
+        {hotels.length === 0 && !loading && !error ? (
           <p>No hotels found for the selected location.</p>
         ) : (
           hotels.map((hotel) => (
@@ -64,6 +79,6 @@ const HotelDiscovery = () => {
       </div>
     </div>
   );
-}
+};
 
 export default HotelDiscovery;
